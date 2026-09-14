@@ -114,7 +114,7 @@ test("external proposals cannot create an Adobe insertion", () => {
   const sessionId = `proposal-boundary-${Date.now()}`
   publishContext(context(sessionId))
   publishSignal({
-    source: "vizz",
+    source: "visual",
     sessionId,
     sequence: 0,
     eventType: "attention.shift",

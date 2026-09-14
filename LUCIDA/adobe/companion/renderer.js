@@ -124,10 +124,10 @@ function renderSignalSurface(surface, unavailable = false) {
   if (!stateTarget || !sourcesTarget) return
   if (unavailable) {
     stateTarget.textContent = "bridge no disponible"
-    sourcesTarget.textContent = "XIO · VIZZ · PUPILA"
+    sourcesTarget.textContent = "XIO · VISUAL · PUPILA"
     return
   }
-  const labels = { xio: "XIO", vizz: "VIZZ", pupila: "PUPILA" }
+  const labels = { xio: "XIO", visual: "VISUAL", pupila: "PUPILA" }
   const states = { active: "activo", stale: "stale", missing: "sin señal" }
   const values = Object.entries(surface?.sources || {})
   const status = surface?.status || {}
@@ -137,7 +137,7 @@ function renderSignalSurface(surface, unavailable = false) {
   sourcesTarget.innerHTML = values.map(([source, value]) => {
     const event = value.eventType ? ` · ${escapeHtml(value.eventType)}` : ""
     return `<span class="signal-source ${escapeHtml(value.state || "missing")}"><b>${labels[source] || escapeHtml(source)}</b> ${states[value.state] || "sin estado"}${event}</span>`
-  }).join("") || "XIO · VIZZ · PUPILA"
+  }).join("") || "XIO · VISUAL · PUPILA"
   const proposals = Array.isArray(surface?.proposals) ? surface.proposals.slice(0, 2) : []
   if (proposals.length) {
     const proposalMarkup = proposals.map((proposal) => {
