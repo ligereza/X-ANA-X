@@ -1,0 +1,27 @@
+{
+  "name": "@lucida/adobe",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Local tool orchestrator for SVG, Blender and Adobe workflows.",
+  "scripts": {
+    "tool": "node src/cli.mjs",
+    "server": "node src/server.mjs",
+    "companion:check": "npm --prefix companion run check",
+    "companion:start": "npm --prefix companion start",
+    "verify": "node src/verify.mjs",
+    "test:core": "npm --prefix generic-interface-layer test",
+    "test:runtime": "node --test tests/*.test.mjs",
+    "test": "npm run test:core && npm run test:runtime",
+    "smoke": "npm --prefix generic-interface-layer run smoke",
+    "legacy:test": "npm run test:runtime",
+    "signal:test": "python -m unittest tests/test_signal_publisher.py"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@adobe/pdfservices-node-sdk": "^4.1.0",
+    "adm-zip": "^0.6.0"
+  }
+}
