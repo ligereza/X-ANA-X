@@ -1,24 +1,24 @@
 namespace Xanax.Core;
 
-public sealed record MatrixLearningResult(
+public sealed record LearningResult(
     bool Learned,
     MissionCase Case,
     string Reason);
 
 /// <summary>
-/// Persistent evidence memory for MATRIX. It stores mission cases, not host
+/// Persistent evidence memory for LEARNING. It stores mission cases, not host
 /// manuals, and never promotes an unverified prediction into executable truth.
 /// </summary>
-public sealed class MatrixLearningSession
+public sealed class LearningSession
 {
     private readonly string? storePath;
     private readonly HashSet<string> persistedIds = new(StringComparer.OrdinalIgnoreCase);
 
-    public MatrixLearningSession(string? storePath = null)
+    public LearningSession(string? storePath = null)
     {
         this.storePath = storePath;
         Learner = new MissionRelationLearner();
-        NeuralModel = new MatrixRelationNeuralModel();
+        NeuralModel = new RelationNeuralModel();
         if (!string.IsNullOrWhiteSpace(storePath))
         {
             var existing = MissionCaseStore.Read(storePath);
@@ -32,10 +32,10 @@ public sealed class MatrixLearningSession
     }
 
     public MissionRelationLearner Learner { get; }
-    public MatrixRelationNeuralModel NeuralModel { get; }
+    public RelationNeuralModel NeuralModel { get; }
     public IReadOnlyList<MissionCase> Cases => Learner.Cases;
 
-    public MatrixLearningResult LearnObservation(
+    public LearningResult LearnObservation(
         MissionObservation observation,
         IReadOnlyList<TrajectorySample>? targetTrajectory = null)
     {
@@ -53,7 +53,7 @@ public sealed class MatrixLearningSession
         return new(true, missionCase, "verified_mission_case_learned");
     }
 
-    public MatrixLearningResult LearnVerifiedCase(MissionCase missionCase)
+    public LearningResult LearnVerifiedCase(MissionCase missionCase)
     {
         if (!IsPromotable(missionCase))
             return new(false, missionCase, "case_requires_replayed_or_human_confirmed_evidence");
@@ -72,9 +72,9 @@ public sealed class MatrixLearningSession
         int minimumEvidenceCases = 2) =>
         Learner.Predict(query, neighborhood, minimumConfidence, minimumEvidenceCases);
 
-    public MatrixNeuralPrediction PredictNeural(MissionCase query) => NeuralModel.Predict(query);
+    public NeuralPrediction PredictNeural(MissionCase query) => NeuralModel.Predict(query);
 
-    public MatrixDecision Decide(
+    public LearningDecision Decide(
         MissionCase query,
         int neighborhood = 5,
         double minimumConfidence = 0.75,

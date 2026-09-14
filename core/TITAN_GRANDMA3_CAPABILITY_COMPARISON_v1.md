@@ -382,7 +382,7 @@ Sources: [Titan multi-user](https://manual.avolites.com/docs/13.0/titan-basics/m
 
 Before intercepting mouse input, test whether the target show can expose a
 safe command or remote channel. A semantic remote route is more stable than a
-screen coordinate and teaches MATRIX the actual operation instead of a
+screen coordinate and teaches LEARNING the actual operation instead of a
 particular layout.
 
 ## 12. Showfile and version boundary
@@ -463,7 +463,7 @@ Sources: [Titan Blind](https://manual.avolites.com/docs/13.0/cues/creating-a-cue
 
 `peek` is not the same as `preview`. Peek changes what the operator sees;
 Preview/Blind changes the programming environment. They must be separate
-controls and separate state in MATRIX.
+controls and separate state in LEARNING.
 
 ## 15. Cloning, multipatch, MVR and visualizer data
 
@@ -786,7 +786,7 @@ Add `show_schema` and `provenance` before semantic learning:
 `container -> version -> object_schema -> dependency_graph -> semantic_operation -> surface_projection`
 
 For Titan, a read-only structural index can start from the container. For
-grandMA3, MATRIX must use Show Creator export, an official exchange format or
+grandMA3, LEARNING must use Show Creator export, an official exchange format or
 a controlled host session. PSR/import is reserved for an isolated copy because
 it can clear Programmer or merge references. A filename extension is not an
 ontology.

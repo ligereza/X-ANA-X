@@ -1,6 +1,6 @@
 # XANAX + LUCIDA — Titan hacia grandMA3
 
-Esta prueba separa MATRIX de la capa de interfaz. MATRIX permanece en MAK. Aqui XANAX traduce misiones entre superficies distintas mediante un estado canonico, modelos de comportamiento, personalidades DMX y rutas nativas. LUCIDA queda como capa superficial opcional.
+Esta prueba separa LEARNING de la capa de interfaz. LEARNING permanece en MAK. Aqui XANAX traduce misiones entre superficies distintas mediante un estado canonico, modelos de comportamiento, personalidades DMX y rutas nativas. LUCIDA queda como capa superficial opcional.
 
 ## Resultado
 

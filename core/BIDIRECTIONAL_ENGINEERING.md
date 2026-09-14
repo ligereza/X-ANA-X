@@ -2,7 +2,7 @@
 
 ## Cambio de eje: la mision antes que el software
 
-Titan y grandMA3 no son el curriculum de MATRIX. Son dos superficies de
+Titan y grandMA3 no son el curriculum de LEARNING. Son dos superficies de
 prueba para un motor mas general: permitir que una persona opere una funcion
 que conoce, aunque el programa destino la distribuya, nombre o componga de
 otra manera.
@@ -47,7 +47,7 @@ sean diferencias matematicas visibles y no errores ocultos.
 
 Cada aprendizaje queda como un caso minimo con cinco piezas: mision,
 evidencia visual, gesto esperado, transformacion necesaria y resultado
-observado. MATRIX aprende relaciones entre casos; no necesita memorizar todos
+observado. LEARNING aprende relaciones entre casos; no necesita memorizar todos
 los manuales internos de Titan o grandMA3.
 
 ## Regla principal
@@ -62,7 +62,7 @@ El camino de regreso usa la misma capa canonica:
 
 Esto evita afirmar que dos objetos son iguales solo porque ambos se llaman Fixture, Attribute, Cue o Playback.
 
-## Capa canonica que MATRIX debe aprender
+## Capa canonica que LEARNING debe aprender
 
 Cada mision se representa con estas dimensiones, en este orden:
 
@@ -176,7 +176,7 @@ Si el destino contiene mas informacion —por ejemplo cue parts, recipes, layers
 
 ## Responsabilidad de cada componente
 
-- `MATRIX` en MAK aprende los pares: intencion, diferencias, evidencia y resultado.
+- `LEARNING` en MAK aprende los pares: intencion, diferencias, evidencia y resultado.
 - `XANAX` convierte una operacion conocida en una explicacion analogica y detecta el quiebre semantico.
 - `LUCIDA` compone los recortes y presenta la superficie de trabajo.
 - El adaptador de input traduce coordenadas y gestos solo dentro de una ventana objetivo verificada.

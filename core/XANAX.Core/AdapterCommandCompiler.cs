@@ -30,8 +30,8 @@ public sealed record AdapterCommandPlan(
     IReadOnlyList<string> Warnings)
 {
     public MissionRealizationKind RealizationKind { get; init; } = MissionRealizationKind.Unsupported;
-    public MatrixDecision? MatrixDecision { get; init; }
-    public bool RequireMatrixConsensus { get; init; }
+    public LearningDecision? LearningDecision { get; init; }
+    public bool RequireLearningConsensus { get; init; }
     public bool AllowApproximateRealization { get; init; }
     public bool Executable => Commands.Count > 0 && Commands.All(command => command.Concrete && !command.RequiresCalibration && !command.RequiresConfirmation && command.RouteKind is AdapterRouteKind.NativeApi or AdapterRouteKind.NativeProtocol);
 }

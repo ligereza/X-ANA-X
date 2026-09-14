@@ -1,9 +1,9 @@
 namespace Xanax.Core;
 
-public sealed record MatrixDecision(
+public sealed record LearningDecision(
     string Relation,
     bool Consensus,
     bool ExecutionEligible,
     MissionRelationPrediction Symbolic,
-    MatrixNeuralPrediction Neural,
+    NeuralPrediction Neural,
     IReadOnlyList<string> Reasons);

@@ -1233,10 +1233,10 @@ public static class LightingCoreSelfTest
             rhythmAnalysis.Signature);
         if (trajectoryCase.NumericSignature.Count != rhythmAnalysis.Signature.Axes.Count ||
             !trajectoryCase.Signature.ContainsKey("trajectory:rhythm") ||
-            trajectoryCase.ModelVersion != "matrix-rel-v2")
-            throw new InvalidOperationException("MATRIX trajectory signature persistence failed.");
+            trajectoryCase.ModelVersion != "learning-rel-v2")
+            throw new InvalidOperationException("LEARNING trajectory signature persistence failed.");
 
-        var matrix = new MatrixLearningSession();
+        var matrix = new LearningSession();
         var learnedCase = trajectoryCase with
         {
             Id = "learned:trajectory:1",
@@ -1266,7 +1266,7 @@ public static class LightingCoreSelfTest
             neuralPrediction.Confidence < 0.5 || !neuralPrediction.GeneralizationEligible || neuralPrediction.SupportingCases < 2 ||
             !neuralPrediction.WithinLearnedDomain || !matrixDecision.Consensus || !matrixDecision.ExecutionEligible ||
             novelNeuralPrediction.GeneralizationEligible || novelNeuralPrediction.WithinLearnedDomain)
-            throw new InvalidOperationException("MATRIX evidence-only learning session failed.");
+            throw new InvalidOperationException("LEARNING evidence-only learning session failed.");
 
         var capability = new CapabilitySnapshot("grandma3", "2.4", true, true, true, true, true, true, true);
         var matrixDenied = ExecutionGate.Evaluate(presetCommand, capability, true, null, true);
@@ -1277,6 +1277,6 @@ public static class LightingCoreSelfTest
             matrixDecision,
             true);
         if (matrixDenied.Allowed || !matrixAllowed.Allowed)
-            throw new InvalidOperationException("MATRIX consensus execution gate failed.");
+            throw new InvalidOperationException("LEARNING consensus execution gate failed.");
     }
 }

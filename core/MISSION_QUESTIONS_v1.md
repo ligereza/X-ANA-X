@@ -1,4 +1,4 @@
-# MATRIX / XANAX — 22 preguntas del motor funcional
+# LEARNING / XANAX — 22 preguntas del motor funcional
 
 ## Regla
 
@@ -57,7 +57,7 @@ controla la proyección y el input.
 ### OQ-006 — Condiciones de disponibilidad
 
 ¿Qué condiciones externas hacen que una misión esté disponible, bloqueada o
-parcial, sin convertir esas condiciones en conocimiento que MATRIX deba
+parcial, sin convertir esas condiciones en conocimiento que LEARNING deba
 memorizar?
 
 Salida: predicados de disponibilidad separados del aprendizaje.
@@ -154,7 +154,7 @@ Salida: sandbox operativo y kill-switch de la misión.
 
 ### OQ-019 — Estado suficiente
 
-¿Cuál es la representación mínima del estado que MATRIX necesita para
+¿Cuál es la representación mínima del estado que LEARNING necesita para
 entender y repetir una misión, sin aprender todos los datos internos del
 software?
 
