@@ -1,18 +1,17 @@
-# Import sources
+# Fuentes de integración
 
-This repository is the integration base for the X-ANA-X system. The named
-branches are domain projections of the same canonical engine:
+Este repositorio reúne tres proyecciones de un mismo motor canónico. Las
+ramas no son acumulativas: cada una conserva únicamente su superficie y el
+núcleo común.
 
-- `PUPILA`: PUPILA plus the current VIZZ checkout.
-- `FARMAKSIA`: FARMAKSIA research and experiment tree.
-- `LUCIDA`: LUCIDA surfaces plus the MOSAIK/Resolume source tree.
+- PUPILA contiene la asistencia y el motor visual/perceptual.
+- FARMAKSIA contiene el estudio investigativo y sus experimentos.
+- LUCIDA contiene las integraciones de escritorio y el adaptador de
+  Resolume.
 
-The imports preserve source identity in their enclosing directories. They are
-snapshots for integration, not claims that the source repositories had the
-same history or the same runtime contract.
+core/ es la base compartida: operaciones, relaciones, trayectorias, rutas
+nativas y memoria de casos verificados.
 
-The XANAX/MATRIX engine in `xanax/` came from the Windows working tree
-`C:/IA/IA ORDENADA/PROYECTOS/03_INTERACCION_VISUAL/LUCIDA/xanax` and was
-compiled there without executing a host application, network, DMX or show
-file.
-
+Las fuentes originales y sus estados previos se conservaron fuera del
+checkout en el archivo local de MAK. El árbol activo usa nombres funcionales
+para evitar que un nombre histórico determine la arquitectura actual.
