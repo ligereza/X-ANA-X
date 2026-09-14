@@ -193,7 +193,7 @@ export async function threeScenePreview(spec = {}, output, options = {}) {
     root.add(object)
     objects.push({ name: object.name, type: object.type, geometry: object.geometry?.type || null })
   }
-  scene.updateMatrixWorld(true)
+  scene.updateRelationWorld(true)
   const target = resolveOutput(output, options)
   const moduleTarget = path.join(path.dirname(target), "three.module.js")
   const resolvedModuleTarget = resolveOutput(moduleTarget, options)
