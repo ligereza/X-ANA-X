@@ -1,4 +1,4 @@
-"""Adapt a MAK structural receipt into a bounded VIZZ context record."""
+"""Adapt a MAK structural receipt into a bounded VISUAL context record."""
 
 from __future__ import annotations
 
@@ -11,13 +11,13 @@ from typing import Any
 from .geometry import StereoGeometryError, validate_calibration_audit
 
 
-SCHEMA = "vizz-operation-context-v1"
+SCHEMA = "visual-operation-context-v1"
 MAK_RECEIPT_SCHEMA = "mak-operation-receipt-v1"
-COMPOSED_SCHEMA = "vizz-composed-context-v1"
+COMPOSED_SCHEMA = "visual-composed-context-v1"
 MAK_DIRECTION_SCHEMA = "mak-portfolio-direction-context-v1"
-DIRECTION_CONTEXT_SCHEMA = "vizz-portfolio-direction-context-v1"
+DIRECTION_CONTEXT_SCHEMA = "visual-portfolio-direction-context-v1"
 MAK_WORK_PREVIEW_SCHEMA = "mak-portfolio-work-preview-v1"
-VIZZ_WORK_PREVIEW_SCHEMA = "vizz-portfolio-work-preview-v1"
+VISUAL_WORK_PREVIEW_SCHEMA = "visual-portfolio-work-preview-v1"
 
 
 def calibration_audit_sha256(audit: Mapping[str, Any]) -> str:
@@ -46,7 +46,7 @@ def _validate_receipt(receipt: Mapping[str, Any]) -> None:
     if source.get("kind") != "grammar_lab_q610_artifact" or source.get("ref") != "grammar-lab:Q-610:artifact" or not re.fullmatch(r"[0-9a-f]{64}", source.get("sha256", "")):
         raise StereoGeometryError("MAK operation receipt source is invalid")
     if operation.get("name") != "expand_library_program" or operation.get("dialect") != "super-mario-feature-v1":
-        raise StereoGeometryError("MAK operation receipt operation is outside the VIZZ context scope")
+        raise StereoGeometryError("MAK operation receipt operation is outside the VISUAL context scope")
     keys = operation.get("expanded_keys")
     if not isinstance(keys, list) or any(not isinstance(key, str) or not key for key in keys) or operation.get("expanded_count") != len(keys):
         raise StereoGeometryError("MAK operation receipt expansion is invalid")
@@ -66,7 +66,7 @@ def _validate_receipt(receipt: Mapping[str, Any]) -> None:
 
 
 def adapt_operation_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
-    """Accept structural provenance while keeping VIZZ metric authorization closed."""
+    """Accept structural provenance while keeping VISUAL metric authorization closed."""
 
     _validate_receipt(receipt)
     source = receipt["source"]
@@ -105,19 +105,19 @@ def adapt_operation_receipt(receipt: Mapping[str, Any]) -> dict[str, Any]:
 
 def validate_operation_context(payload: Mapping[str, Any]) -> bool:
     if not isinstance(payload, Mapping) or payload.get("schema") != SCHEMA or payload.get("status") != "CONTEXT_ACCEPTED_STRUCTURAL_ONLY":
-        raise StereoGeometryError("VIZZ operation context header is invalid")
+        raise StereoGeometryError("VISUAL operation context header is invalid")
     expected = {"schema", "status", "source", "operation", "provenance", "controls"}
     if set(payload) != expected:
-        raise StereoGeometryError("VIZZ operation context fields are invalid")
+        raise StereoGeometryError("VISUAL operation context fields are invalid")
     source = payload["source"]
     if set(source) != {"schema", "ref", "sha256"} or source["schema"] != MAK_RECEIPT_SCHEMA or source["ref"] != "grammar-lab:Q-610:artifact" or not re.fullmatch(r"[0-9a-f]{64}", source["sha256"]):
-        raise StereoGeometryError("VIZZ operation context source is invalid")
+        raise StereoGeometryError("VISUAL operation context source is invalid")
     operation = payload["operation"]
     if set(operation) != {"name", "dialect", "expanded_count", "expanded_keys"} or operation["name"] != "expand_library_program" or operation["dialect"] != "super-mario-feature-v1" or not isinstance(operation["expanded_keys"], list) or operation["expanded_count"] != len(operation["expanded_keys"]):
-        raise StereoGeometryError("VIZZ operation context operation is invalid")
+        raise StereoGeometryError("VISUAL operation context operation is invalid")
     provenance = payload["provenance"]
     if set(provenance) != {"library_source_ref", "evaluation_source_ref", "package_sha256"} or not all(isinstance(value, str) and value for value in provenance.values()) or not re.fullmatch(r"[0-9a-f]{64}", provenance["package_sha256"]):
-        raise StereoGeometryError("VIZZ operation context provenance is invalid")
+        raise StereoGeometryError("VISUAL operation context provenance is invalid")
     if payload["controls"] != {
         "metric_depth_authorized": False,
         "calibration_audit_required": True,
@@ -125,12 +125,12 @@ def validate_operation_context(payload: Mapping[str, Any]) -> bool:
         "network_contact": False,
         "semantic_equivalence_authorized": False,
     }:
-        raise StereoGeometryError("VIZZ operation context controls are invalid")
+        raise StereoGeometryError("VISUAL operation context controls are invalid")
     return True
 
 
 def adapt_portfolio_direction_context(direction: Mapping[str, Any]) -> dict[str, Any]:
-    """Carry MAK direction state into VIZZ without granting metric authority."""
+    """Carry MAK direction state into VISUAL without granting metric authority."""
 
     if not isinstance(direction, Mapping) or direction.get("schema") != MAK_DIRECTION_SCHEMA:
         raise StereoGeometryError("MAK portfolio direction schema is invalid")
@@ -206,19 +206,19 @@ def adapt_portfolio_direction_context(direction: Mapping[str, Any]) -> dict[str,
 
 def validate_portfolio_direction_context(payload: Mapping[str, Any]) -> bool:
     if not isinstance(payload, Mapping) or payload.get("schema") != DIRECTION_CONTEXT_SCHEMA or payload.get("status") != "CONTEXT_ACCEPTED_FAIL_CLOSED":
-        raise StereoGeometryError("VIZZ portfolio direction context header is invalid")
+        raise StereoGeometryError("VISUAL portfolio direction context header is invalid")
     expected = {"schema", "status", "source", "states", "measurement", "controls", "provenance"}
     if set(payload) != expected:
-        raise StereoGeometryError("VIZZ portfolio direction context fields are invalid")
+        raise StereoGeometryError("VISUAL portfolio direction context fields are invalid")
     source = payload["source"]
     if set(source) != {"schema", "purpose", "direction_ids"} or source["schema"] != MAK_DIRECTION_SCHEMA or source["purpose"] != "vision_order_culture_computation_read_only_frame" or source["direction_ids"] != ["vision", "order", "culture_computation"]:
-        raise StereoGeometryError("VIZZ portfolio direction source is invalid")
+        raise StereoGeometryError("VISUAL portfolio direction source is invalid")
     states = payload["states"]
     if set(states) != {"vision", "order", "culture_computation", "instrument"} or any(not isinstance(value, str) or not value for value in states.values()):
-        raise StereoGeometryError("VIZZ portfolio direction states are invalid")
+        raise StereoGeometryError("VISUAL portfolio direction states are invalid")
     measurement = payload["measurement"]
     if measurement != {"status": "unknown_measurement_refused", "unknown": True, "claim_allowed": False}:
-        raise StereoGeometryError("VIZZ portfolio direction measurement boundary is invalid")
+        raise StereoGeometryError("VISUAL portfolio direction measurement boundary is invalid")
     if payload["controls"] != {
         "metric_depth_authorized": False,
         "calibration_audit_required": True,
@@ -227,7 +227,7 @@ def validate_portfolio_direction_context(payload: Mapping[str, Any]) -> bool:
         "semantic_equivalence_authorized": False,
         "domain_mix_authorized": False,
     }:
-        raise StereoGeometryError("VIZZ portfolio direction controls are invalid")
+        raise StereoGeometryError("VISUAL portfolio direction controls are invalid")
     provenance = payload["provenance"]
     if provenance != {
         "mak_schema": MAK_DIRECTION_SCHEMA,
@@ -237,12 +237,12 @@ def validate_portfolio_direction_context(payload: Mapping[str, Any]) -> bool:
         "semantic_equivalence": False,
         "learning_demonstrated": False,
     }:
-        raise StereoGeometryError("VIZZ portfolio direction provenance is invalid")
+        raise StereoGeometryError("VISUAL portfolio direction provenance is invalid")
     return True
 
 
 def adapt_portfolio_work_preview(preview: Mapping[str, Any]) -> dict[str, Any]:
-    """Accept only the VIZZ calibration preview as non-executing context."""
+    """Accept only the VISUAL calibration preview as non-executing context."""
     if not isinstance(preview, Mapping) or preview.get("schema") != MAK_WORK_PREVIEW_SCHEMA:
         raise StereoGeometryError("MAK work preview schema is invalid")
     if preview.get("available") is not True or preview.get("read_only") is not True or preview.get("preview_only") is not True:
@@ -253,10 +253,10 @@ def adapt_portfolio_work_preview(preview: Mapping[str, Any]) -> dict[str, Any]:
     provenance = preview.get("provenance")
     if not all(isinstance(value, Mapping) for value in (source, task, control, provenance)):
         raise StereoGeometryError("MAK work preview shape is invalid")
-    if source.get("task_id") != "vizz_calibration" or source.get("relation_status") not in {"unbound", "needs_evidence"}:
-        raise StereoGeometryError("MAK work preview is outside the VIZZ calibration scope")
-    if task.get("area") != "vizz/measurement" or task.get("layer") != "instrument" or task.get("state") != "vizz_measurement_refused" or task.get("human_gate") != "physical_calibration_evidence" or task.get("execution_allowed") is not False:
-        raise StereoGeometryError("MAK VIZZ work preview boundary is invalid")
+    if source.get("task_id") != "visual_calibration" or source.get("relation_status") not in {"unbound", "needs_evidence"}:
+        raise StereoGeometryError("MAK work preview is outside the VISUAL calibration scope")
+    if task.get("area") != "visual/measurement" or task.get("layer") != "instrument" or task.get("state") != "visual_measurement_refused" or task.get("human_gate") != "physical_calibration_evidence" or task.get("execution_allowed") is not False:
+        raise StereoGeometryError("MAK VISUAL work preview boundary is invalid")
     if control != {
         "database_write": False,
         "decision_write": False,
@@ -267,11 +267,11 @@ def adapt_portfolio_work_preview(preview: Mapping[str, Any]) -> dict[str, Any]:
         "normalize_execution": False,
         "measurement_execution": False,
     }:
-        raise StereoGeometryError("MAK VIZZ work preview controls are invalid")
+        raise StereoGeometryError("MAK VISUAL work preview controls are invalid")
     if provenance.get("typed_relation_present") is not False or provenance.get("task_execution") is not False or provenance.get("semantic_claim") is not False or provenance.get("learning_demonstrated") is not False:
-        raise StereoGeometryError("MAK VIZZ work preview provenance boundary is invalid")
+        raise StereoGeometryError("MAK VISUAL work preview provenance boundary is invalid")
     result = {
-        "schema": VIZZ_WORK_PREVIEW_SCHEMA,
+        "schema": VISUAL_WORK_PREVIEW_SCHEMA,
         "status": "PREVIEW_ACCEPTED_FAIL_CLOSED",
         "source": {
             "schema": MAK_WORK_PREVIEW_SCHEMA,
@@ -310,24 +310,24 @@ def adapt_portfolio_work_preview(preview: Mapping[str, Any]) -> dict[str, Any]:
 
 
 def validate_portfolio_work_preview(payload: Mapping[str, Any]) -> bool:
-    if not isinstance(payload, Mapping) or payload.get("schema") != VIZZ_WORK_PREVIEW_SCHEMA or payload.get("status") != "PREVIEW_ACCEPTED_FAIL_CLOSED":
-        raise StereoGeometryError("VIZZ work preview header is invalid")
+    if not isinstance(payload, Mapping) or payload.get("schema") != VISUAL_WORK_PREVIEW_SCHEMA or payload.get("status") != "PREVIEW_ACCEPTED_FAIL_CLOSED":
+        raise StereoGeometryError("VISUAL work preview header is invalid")
     expected = {"schema", "status", "source", "task", "controls", "provenance"}
     if set(payload) != expected:
-        raise StereoGeometryError("VIZZ work preview fields are invalid")
+        raise StereoGeometryError("VISUAL work preview fields are invalid")
     source = payload["source"]
-    if set(source) != {"schema", "task_id", "project_id", "relation_status", "typed_relation_present"} or source["schema"] != MAK_WORK_PREVIEW_SCHEMA or source["task_id"] != "vizz_calibration" or source["relation_status"] not in {"unbound", "needs_evidence"} or source["typed_relation_present"] is not False:
-        raise StereoGeometryError("VIZZ work preview source is invalid")
+    if set(source) != {"schema", "task_id", "project_id", "relation_status", "typed_relation_present"} or source["schema"] != MAK_WORK_PREVIEW_SCHEMA or source["task_id"] != "visual_calibration" or source["relation_status"] not in {"unbound", "needs_evidence"} or source["typed_relation_present"] is not False:
+        raise StereoGeometryError("VISUAL work preview source is invalid")
     if source["project_id"] is not None and (not isinstance(source["project_id"], str) or not source["project_id"].strip()):
-        raise StereoGeometryError("VIZZ work preview project id is invalid")
+        raise StereoGeometryError("VISUAL work preview project id is invalid")
     if payload["task"] != {
-        "area": "vizz/measurement",
+        "area": "visual/measurement",
         "layer": "instrument",
-        "state": "vizz_measurement_refused",
+        "state": "visual_measurement_refused",
         "human_gate": "physical_calibration_evidence",
         "execution_allowed": False,
     }:
-        raise StereoGeometryError("VIZZ work preview task is invalid")
+        raise StereoGeometryError("VISUAL work preview task is invalid")
     if payload["controls"] != {
         "calibration_evidence_required": True,
         "metric_depth_authorized": False,
@@ -337,7 +337,7 @@ def validate_portfolio_work_preview(payload: Mapping[str, Any]) -> bool:
         "semantic_equivalence_authorized": False,
         "domain_mix_authorized": False,
     }:
-        raise StereoGeometryError("VIZZ work preview controls are invalid")
+        raise StereoGeometryError("VISUAL work preview controls are invalid")
     if payload["provenance"] != {
         "mak_schema": MAK_WORK_PREVIEW_SCHEMA,
         "deterministic": True,
@@ -346,7 +346,7 @@ def validate_portfolio_work_preview(payload: Mapping[str, Any]) -> bool:
         "semantic_claim": False,
         "learning_demonstrated": False,
     }:
-        raise StereoGeometryError("VIZZ work preview provenance is invalid")
+        raise StereoGeometryError("VISUAL work preview provenance is invalid")
     return True
 
 
@@ -392,16 +392,16 @@ def compose_operation_context_with_calibration(
 
 def validate_composed_context(payload: Mapping[str, Any]) -> bool:
     if not isinstance(payload, Mapping) or payload.get("schema") != COMPOSED_SCHEMA or payload.get("status") != "CONTEXT_COMPOSED_FAIL_CLOSED":
-        raise StereoGeometryError("VIZZ composed context header is invalid")
+        raise StereoGeometryError("VISUAL composed context header is invalid")
     expected = {"schema", "status", "mak_context", "calibration", "controls"}
     if set(payload) != expected:
-        raise StereoGeometryError("VIZZ composed context fields are invalid")
+        raise StereoGeometryError("VISUAL composed context fields are invalid")
     mak = payload["mak_context"]
     if set(mak) != {"schema", "ref", "sha256", "operation", "dialect", "expanded_count"} or mak["schema"] != SCHEMA or mak["ref"] != "grammar-lab:Q-610:artifact" or not re.fullmatch(r"[0-9a-f]{64}", mak["sha256"]) or mak["operation"] != "expand_library_program" or mak["dialect"] != "super-mario-feature-v1" or not isinstance(mak["expanded_count"], int) or mak["expanded_count"] < 0:
-        raise StereoGeometryError("VIZZ composed MAK context is invalid")
+        raise StereoGeometryError("VISUAL composed MAK context is invalid")
     calibration = payload["calibration"]
-    if set(calibration) != {"schema", "status", "geometry_status", "evidence_scope", "provenance_ref", "audit_sha256", "calibration_audit_required"} or calibration["schema"] != "vizz-calibration-audit-v1" or calibration["status"] not in {"CALIBRATION_EVIDENCE_REQUIRED", "CALIBRATION_REQUIRED"} or calibration["geometry_status"] not in {"METRIC_STEREO_READY", "CALIBRATION_REQUIRED"} or calibration["evidence_scope"] not in {"synthetic_only", "physical_calibration_required"} or (calibration["provenance_ref"] is not None and (not isinstance(calibration["provenance_ref"], str) or not calibration["provenance_ref"].strip())) or not re.fullmatch(r"[0-9a-f]{64}", calibration["audit_sha256"]) or calibration["calibration_audit_required"] is not True:
-        raise StereoGeometryError("VIZZ composed calibration context is invalid")
+    if set(calibration) != {"schema", "status", "geometry_status", "evidence_scope", "provenance_ref", "audit_sha256", "calibration_audit_required"} or calibration["schema"] != "visual-calibration-audit-v1" or calibration["status"] not in {"CALIBRATION_EVIDENCE_REQUIRED", "CALIBRATION_REQUIRED"} or calibration["geometry_status"] not in {"METRIC_STEREO_READY", "CALIBRATION_REQUIRED"} or calibration["evidence_scope"] not in {"synthetic_only", "physical_calibration_required"} or (calibration["provenance_ref"] is not None and (not isinstance(calibration["provenance_ref"], str) or not calibration["provenance_ref"].strip())) or not re.fullmatch(r"[0-9a-f]{64}", calibration["audit_sha256"]) or calibration["calibration_audit_required"] is not True:
+        raise StereoGeometryError("VISUAL composed calibration context is invalid")
     if payload["controls"] != {
         "metric_depth_authorized": False,
         "calibration_audit_required": True,
@@ -410,7 +410,7 @@ def validate_composed_context(payload: Mapping[str, Any]) -> bool:
         "semantic_equivalence_authorized": False,
         "domain_mix_authorized": False,
     }:
-        raise StereoGeometryError("VIZZ composed context controls are invalid")
+        raise StereoGeometryError("VISUAL composed context controls are invalid")
     return True
 
 
@@ -418,7 +418,7 @@ __all__ = [
     "COMPOSED_SCHEMA",
     "DIRECTION_CONTEXT_SCHEMA",
     "MAK_WORK_PREVIEW_SCHEMA",
-    "VIZZ_WORK_PREVIEW_SCHEMA",
+    "VISUAL_WORK_PREVIEW_SCHEMA",
     "MAK_DIRECTION_SCHEMA",
     "MAK_RECEIPT_SCHEMA",
     "SCHEMA",

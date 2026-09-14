@@ -18,6 +18,6 @@
   "geometry_status": "METRIC_STEREO_READY",
   "metric_depth_authorized": false,
   "reason": "model parameters are valid, but no physical calibration evidence was observed",
-  "schema": "vizz-calibration-audit-v1",
+  "schema": "visual-calibration-audit-v1",
   "status": "CALIBRATION_EVIDENCE_REQUIRED"
 }

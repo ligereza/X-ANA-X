@@ -1,5 +1,5 @@
 {
-  "schema": "vizz-noise-characterization-v1",
+  "schema": "visual-noise-characterization-v1",
   "scope": "synthetic_only",
   "truth": {
     "point_world": [

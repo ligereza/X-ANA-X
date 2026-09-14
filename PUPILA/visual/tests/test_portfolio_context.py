@@ -1,24 +1,24 @@
 import copy
 import unittest
 
-from vizz import (
+from visual import (
     adapt_portfolio_read_only_context,
     evaluate_portfolio_measurement_request,
     validate_portfolio_measurement_gate,
     validate_portfolio_read_only_context,
 )
-from vizz.geometry import StereoGeometryError
-from vizz.measurement_gate import evaluate_measurement_request
+from visual.geometry import StereoGeometryError
+from visual.measurement_gate import evaluate_measurement_request
 
 
 def _context():
     return {
-        "schema": "mak-vizz-portfolio-read-only-context-v1",
+        "schema": "mak-visual-portfolio-read-only-context-v1",
         "available": True,
         "read_only": True,
         "source": {
-            "measurement_schema": "mak-vizz-measurement-status-v1",
-            "lineage_schema": "mak-vizz-lineage-status-v1",
+            "measurement_schema": "mak-visual-measurement-status-v1",
+            "lineage_schema": "mak-visual-lineage-status-v1",
             "delta_schema": "mak-structural-delta-status-v1",
             "preview_schema": "mak-portfolio-work-preview-v1",
         },
@@ -44,8 +44,8 @@ def _context():
             "learning_demonstrated": False,
         },
         "preview": {
-            "task_id": "vizz_calibration",
-            "state": "vizz_measurement_refused",
+            "task_id": "visual_calibration",
+            "state": "visual_measurement_refused",
             "human_gate": "physical_calibration_evidence",
             "project_id": "project-1",
             "relation_status": "needs_evidence",
@@ -82,7 +82,7 @@ class PortfolioContextTests(unittest.TestCase):
         adapted = adapt_portfolio_read_only_context(_context())
 
         self.assertTrue(validate_portfolio_read_only_context(adapted))
-        self.assertEqual(adapted["schema"], "vizz-portfolio-read-only-context-v1")
+        self.assertEqual(adapted["schema"], "visual-portfolio-read-only-context-v1")
         self.assertFalse(adapted["controls"]["metric_depth_authorized"])
         self.assertFalse(adapted["claims"]["measurement_executed"])
 

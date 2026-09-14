@@ -11,7 +11,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import StereoRig, ray_from_pixel, triangulate_rays  # noqa: E402
+from visual import StereoRig, ray_from_pixel, triangulate_rays  # noqa: E402
 
 from synthetic_rig import camera  # noqa: E402
 
@@ -51,7 +51,7 @@ def characterize() -> dict:
         baseline_rows.append({"baseline_world": distance, **row})
 
     result = {
-        "schema": "vizz-noise-characterization-v1",
+        "schema": "visual-noise-characterization-v1",
         "scope": "synthetic_only",
         "truth": {"point_world": truth.tolist(), "intrinsics": "800px focal length, principal point (320,240)"},
         "pixel_perturbation": pixel_rows,

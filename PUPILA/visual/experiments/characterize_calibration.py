@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Bounded synthetic characterization of calibration error in VIZZ."""
+"""Bounded synthetic characterization of calibration error in VISUAL."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import CameraModel, ray_from_pixel, triangulate_rays  # noqa: E402
+from visual import CameraModel, ray_from_pixel, triangulate_rays  # noqa: E402
 
 from synthetic_rig import camera, project  # noqa: E402
 
@@ -43,7 +43,7 @@ def characterize() -> dict:
         "camera_b_yaw_plus_0_5_deg": estimate(true_a, pose_b, pixel_a, pixel_b, truth),
     }
     result = {
-        "schema": "vizz-calibration-characterization-v1",
+        "schema": "visual-calibration-characterization-v1",
         "scope": "synthetic_only",
         "truth": {"point_world": truth.tolist(), "true_baseline_world": 0.2, "pixel_a": pixel_a, "pixel_b": pixel_b},
         "estimates": rows,

@@ -10,7 +10,7 @@ from .geometry import StereoGeometryError, validate_calibration_audit
 from .operation_context import calibration_audit_sha256, validate_composed_context
 
 
-SCHEMA = "vizz-measurement-gate-v1"
+SCHEMA = "visual-measurement-gate-v1"
 
 
 def evaluate_measurement_request(
@@ -74,7 +74,7 @@ def validate_measurement_gate(payload: Mapping[str, Any]) -> bool:
     if set(payload) != expected:
         raise StereoGeometryError("measurement gate fields are invalid")
     context = payload["context"]
-    if set(context) != {"schema", "source_ref", "dialect", "calibration_status", "calibration_audit_sha256", "calibration_provenance_ref"} or context["schema"] != "vizz-composed-context-v1" or not isinstance(context["source_ref"], str) or context["source_ref"] != "grammar-lab:Q-610:artifact" or context["dialect"] != "super-mario-feature-v1" or context["calibration_status"] not in {"CALIBRATION_EVIDENCE_REQUIRED", "CALIBRATION_REQUIRED"} or not isinstance(context["calibration_audit_sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", context["calibration_audit_sha256"]) or (context["calibration_provenance_ref"] is not None and (not isinstance(context["calibration_provenance_ref"], str) or not context["calibration_provenance_ref"].strip())):
+    if set(context) != {"schema", "source_ref", "dialect", "calibration_status", "calibration_audit_sha256", "calibration_provenance_ref"} or context["schema"] != "visual-composed-context-v1" or not isinstance(context["source_ref"], str) or context["source_ref"] != "grammar-lab:Q-610:artifact" or context["dialect"] != "super-mario-feature-v1" or context["calibration_status"] not in {"CALIBRATION_EVIDENCE_REQUIRED", "CALIBRATION_REQUIRED"} or not isinstance(context["calibration_audit_sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", context["calibration_audit_sha256"]) or (context["calibration_provenance_ref"] is not None and (not isinstance(context["calibration_provenance_ref"], str) or not context["calibration_provenance_ref"].strip())):
         raise StereoGeometryError("measurement gate context is invalid")
     execution = payload["execution"]
     if execution != {

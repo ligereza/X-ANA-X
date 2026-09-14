@@ -4,9 +4,9 @@ import copy
 import re
 import unittest
 
-from vizz.geometry import StereoGeometryError, StereoRig, CameraModel, calibration_audit
-from vizz.measurement_gate import evaluate_measurement_request
-from vizz.operation_context import (
+from visual.geometry import StereoGeometryError, StereoRig, CameraModel, calibration_audit
+from visual.measurement_gate import evaluate_measurement_request
+from visual.operation_context import (
     adapt_portfolio_direction_context,
     compose_operation_context_with_calibration,
     validate_composed_context,
@@ -28,7 +28,7 @@ def _camera(camera_id: str, center: tuple[float, float, float]) -> CameraModel:
 class OperationContextLineageTests(unittest.TestCase):
     def _context(self):
         return {
-            "schema": "vizz-operation-context-v1",
+            "schema": "visual-operation-context-v1",
             "status": "CONTEXT_ACCEPTED_STRUCTURAL_ONLY",
             "source": {"schema": "mak-operation-receipt-v1", "ref": "grammar-lab:Q-610:artifact", "sha256": "a" * 64},
             "operation": {"name": "expand_library_program", "dialect": "super-mario-feature-v1", "expanded_count": 0, "expanded_keys": []},
@@ -64,7 +64,7 @@ class OperationContextLineageTests(unittest.TestCase):
                 "vision": {"state": "bounded_observation", "semantic_claim_established": False},
                 "order": {"state": "structural_order_only", "semantic_equivalence_established": False},
                 "culture_computation": {"state": "observed_practice_context", "relation_inference": False},
-                "instrument": {"state": "vizz_measurement_refused", "measurement_status": "unknown_measurement_refused", "measurement_unknown": True, "measurement_claim_allowed": False},
+                "instrument": {"state": "visual_measurement_refused", "measurement_status": "unknown_measurement_refused", "measurement_unknown": True, "measurement_claim_allowed": False},
             },
             "directions": [
                 {"id": "vision", "kind": "orientation", "state": "bounded_observation", "human_gate": "interpretation_and_editorial_context"},
@@ -83,9 +83,9 @@ class OperationContextLineageTests(unittest.TestCase):
             },
         }
 
-    def test_portfolio_direction_is_carried_to_vizz_fail_closed(self):
+    def test_portfolio_direction_is_carried_to_visual_fail_closed(self):
         adapted = adapt_portfolio_direction_context(self._direction_context())
-        self.assertEqual(adapted["schema"], "vizz-portfolio-direction-context-v1")
+        self.assertEqual(adapted["schema"], "visual-portfolio-direction-context-v1")
         self.assertTrue(validate_portfolio_direction_context(adapted))
         self.assertFalse(adapted["controls"]["metric_depth_authorized"])
         self.assertTrue(adapted["measurement"]["unknown"])
@@ -105,17 +105,17 @@ class OperationContextLineageTests(unittest.TestCase):
             "preview_only": True,
             "source": {
                 "schema": "mak-portfolio-work-packet-v1",
-                "task_id": "vizz_calibration",
+                "task_id": "visual_calibration",
                 "task_count": 4,
                 "project_id": "project-5047cc3a2269b5031460",
                 "relation_status": "needs_evidence",
             },
             "task": {
-                "id": "vizz_calibration",
-                "area": "vizz/measurement",
+                "id": "visual_calibration",
+                "area": "visual/measurement",
                 "layer": "instrument",
-                "state": "vizz_measurement_refused",
-                "evidence": "mak-vizz-measurement-status-v1 + mak-vizz-lineage-status-v1",
+                "state": "visual_measurement_refused",
+                "evidence": "mak-visual-measurement-status-v1 + mak-visual-lineage-status-v1",
                 "action": "provide_physical_calibration_evidence_before_metric_measurement",
                 "human_gate": "physical_calibration_evidence",
                 "execution_allowed": False,
@@ -137,7 +137,7 @@ class OperationContextLineageTests(unittest.TestCase):
             },
         }
 
-    def test_vizz_calibration_preview_is_context_only(self):
+    def test_visual_calibration_preview_is_context_only(self):
         adapted = adapt_portfolio_work_preview(self._work_preview())
         self.assertTrue(validate_portfolio_work_preview(adapted))
         self.assertEqual(adapted["source"]["project_id"], "project-5047cc3a2269b5031460")
@@ -145,13 +145,13 @@ class OperationContextLineageTests(unittest.TestCase):
         self.assertFalse(adapted["controls"]["metric_depth_authorized"])
         self.assertFalse(adapted["controls"]["publication"])
 
-    def test_vizz_rejects_non_calibration_preview(self):
+    def test_visual_rejects_non_calibration_preview(self):
         preview = self._work_preview()
         preview["source"]["task_id"] = "structural_order"
-        with self.assertRaisesRegex(StereoGeometryError, "outside the VIZZ"):
+        with self.assertRaisesRegex(StereoGeometryError, "outside the VISUAL"):
             adapt_portfolio_work_preview(preview)
 
-    def test_vizz_rejects_publication_enablement_in_preview(self):
+    def test_visual_rejects_publication_enablement_in_preview(self):
         adapted = adapt_portfolio_work_preview(self._work_preview())
         adapted["controls"]["publication"] = True
         with self.assertRaisesRegex(StereoGeometryError, "controls"):

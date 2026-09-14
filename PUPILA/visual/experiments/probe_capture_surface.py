@@ -33,7 +33,7 @@ def probe(path: Path) -> dict:
 def run() -> dict:
     nodes = sorted(Path("/dev").glob("video*"))
     result = {
-        "schema": "vizz-capture-surface-probe-v1",
+        "schema": "visual-capture-surface-probe-v1",
         "scope": "capability_listing_only",
         "nodes": [probe(path) for path in nodes if path.is_char_device()],
         "calibration_state": "CALIBRATION_REQUIRED",

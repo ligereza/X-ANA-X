@@ -1,4 +1,4 @@
-"""Fail-closed adapter for the MAK VIZZ-facing portfolio context."""
+"""Fail-closed adapter for the MAK VISUAL-facing portfolio context."""
 
 from __future__ import annotations
 
@@ -8,8 +8,8 @@ from typing import Any
 from .geometry import StereoGeometryError
 
 
-MAK_SCHEMA = "mak-vizz-portfolio-read-only-context-v1"
-SCHEMA = "vizz-portfolio-read-only-context-v1"
+MAK_SCHEMA = "mak-visual-portfolio-read-only-context-v1"
+SCHEMA = "visual-portfolio-read-only-context-v1"
 STATUS = "CONTEXT_ACCEPTED_FAIL_CLOSED"
 _CONTROL = {
     "calibration_evidence_required": True,
@@ -22,7 +22,7 @@ _CONTROL = {
     "network_contact": False,
 }
 _CLAIMS = {"semantic_claim": False, "learning_demonstrated": False, "measurement_executed": False}
-MEASUREMENT_SCHEMA = "vizz-portfolio-measurement-gate-v1"
+MEASUREMENT_SCHEMA = "visual-portfolio-measurement-gate-v1"
 
 
 def _text(value: Any, field: str) -> str:
@@ -44,9 +44,9 @@ def _int(value: Any, field: str) -> int:
 
 
 def adapt_portfolio_read_only_context(context: Mapping[str, Any]) -> dict[str, Any]:
-    """Accept MAK's bounded context while preserving VIZZ refusal state."""
+    """Accept MAK's bounded context while preserving VISUAL refusal state."""
     if not isinstance(context, Mapping) or context.get("schema") != MAK_SCHEMA or context.get("available") is not True or context.get("read_only") is not True:
-        raise StereoGeometryError("MAK VIZZ portfolio context is not available read-only")
+        raise StereoGeometryError("MAK VISUAL portfolio context is not available read-only")
     source = _mapping(context.get("source"), "context.source")
     measurement = _mapping(context.get("measurement"), "context.measurement")
     lineage = _mapping(context.get("lineage"), "context.lineage")
@@ -54,22 +54,22 @@ def adapt_portfolio_read_only_context(context: Mapping[str, Any]) -> dict[str, A
     preview = _mapping(context.get("preview"), "context.preview")
     boundary = _mapping(context.get("boundary"), "context.boundary")
     control = _mapping(context.get("control"), "context.control")
-    if source.get("measurement_schema") != "mak-vizz-measurement-status-v1" or source.get("lineage_schema") != "mak-vizz-lineage-status-v1" or source.get("delta_schema") != "mak-structural-delta-status-v1" or source.get("preview_schema") != "mak-portfolio-work-preview-v1":
-        raise StereoGeometryError("MAK VIZZ portfolio context source schemas are invalid")
+    if source.get("measurement_schema") != "mak-visual-measurement-status-v1" or source.get("lineage_schema") != "mak-visual-lineage-status-v1" or source.get("delta_schema") != "mak-structural-delta-status-v1" or source.get("preview_schema") != "mak-portfolio-work-preview-v1":
+        raise StereoGeometryError("MAK VISUAL portfolio context source schemas are invalid")
     if measurement.get("status") != "unknown_measurement_refused" or measurement.get("calibration_status") != "CALIBRATION_EVIDENCE_REQUIRED" or measurement.get("triangulation_attempted") is not False or measurement.get("depth_result_present") is not False or measurement.get("claim_allowed") is not False:
-        raise StereoGeometryError("MAK VIZZ portfolio measurement refusal is invalid")
+        raise StereoGeometryError("MAK VISUAL portfolio measurement refusal is invalid")
     if lineage.get("status") != "revision_context_only" or lineage.get("current_status") != "unknown_measurement_refused" or lineage.get("revision_status") != "revision_accepted" or lineage.get("current_state_replaced") is not False:
-        raise StereoGeometryError("MAK VIZZ portfolio lineage boundary is invalid")
+        raise StereoGeometryError("MAK VISUAL portfolio lineage boundary is invalid")
     if delta.get("status") != "revision_only_delta" or delta.get("learning_demonstrated") is not False:
-        raise StereoGeometryError("MAK VIZZ portfolio delta boundary is invalid")
+        raise StereoGeometryError("MAK VISUAL portfolio delta boundary is invalid")
     for field in ("shared_keys", "residue_keys", "serialized_savings_bytes"):
         _int(delta.get(field), f"delta.{field}")
-    if preview.get("task_id") != "vizz_calibration" or preview.get("state") != "vizz_measurement_refused" or preview.get("human_gate") != "physical_calibration_evidence" or preview.get("preview_only") is not True or preview.get("execution_allowed") is not False or preview.get("task_execution") is not False:
-        raise StereoGeometryError("MAK VIZZ portfolio preview boundary is invalid")
+    if preview.get("task_id") != "visual_calibration" or preview.get("state") != "visual_measurement_refused" or preview.get("human_gate") != "physical_calibration_evidence" or preview.get("preview_only") is not True or preview.get("execution_allowed") is not False or preview.get("task_execution") is not False:
+        raise StereoGeometryError("MAK VISUAL portfolio preview boundary is invalid")
     if boundary != {"measurement_refused": True, "calibration_required": True, "lineage_is_not_authorization": True, "delta_is_structural_only": True, "preview_is_not_execution": True, "semantic_claim": False, "learning_demonstrated": False}:
-        raise StereoGeometryError("MAK VIZZ portfolio context boundary is invalid")
+        raise StereoGeometryError("MAK VISUAL portfolio context boundary is invalid")
     if control != {"database_write": False, "decision_write": False, "state_advance": False, "selection_effect": "none", "promotion": "none", "publication": False, "measurement_execution": False, "metric_depth_authorized": False, "network": False, "execution": False}:
-        raise StereoGeometryError("MAK VIZZ portfolio context controls are invalid")
+        raise StereoGeometryError("MAK VISUAL portfolio context controls are invalid")
     result = {
         "schema": SCHEMA,
         "status": STATUS,
@@ -93,37 +93,37 @@ def adapt_portfolio_read_only_context(context: Mapping[str, Any]) -> dict[str, A
 
 def validate_portfolio_read_only_context(payload: Mapping[str, Any]) -> bool:
     if not isinstance(payload, Mapping) or payload.get("schema") != SCHEMA or payload.get("status") != STATUS:
-        raise StereoGeometryError("VIZZ portfolio context header is invalid")
+        raise StereoGeometryError("VISUAL portfolio context header is invalid")
     expected = {"schema", "status", "source", "measurement", "lineage", "delta", "preview", "controls", "claims"}
     if set(payload) != expected:
-        raise StereoGeometryError("VIZZ portfolio context fields are invalid")
+        raise StereoGeometryError("VISUAL portfolio context fields are invalid")
     source = payload["source"]
     if set(source) != {"schema", "measurement_schema", "lineage_schema", "delta_schema", "preview_schema"} or source["schema"] != MAK_SCHEMA:
-        raise StereoGeometryError("VIZZ portfolio context source is invalid")
+        raise StereoGeometryError("VISUAL portfolio context source is invalid")
     for field in source:
         _text(source[field], f"source.{field}")
     measurement = payload["measurement"]
     if set(measurement) != {"status", "calibration_status", "triangulation_attempted", "depth_result_present", "claim_allowed"} or measurement != {"status": "unknown_measurement_refused", "calibration_status": "CALIBRATION_EVIDENCE_REQUIRED", "triangulation_attempted": False, "depth_result_present": False, "claim_allowed": False}:
-        raise StereoGeometryError("VIZZ portfolio context measurement is invalid")
+        raise StereoGeometryError("VISUAL portfolio context measurement is invalid")
     lineage = payload["lineage"]
     if set(lineage) != {"status", "current_status", "revision_status", "current_state_replaced", "current_ref"} or lineage["status"] != "revision_context_only" or lineage["current_status"] != "unknown_measurement_refused" or lineage["revision_status"] != "revision_accepted" or lineage["current_state_replaced"] is not False:
-        raise StereoGeometryError("VIZZ portfolio context lineage is invalid")
+        raise StereoGeometryError("VISUAL portfolio context lineage is invalid")
     for field in ("status", "current_status", "revision_status", "current_ref"):
         _text(lineage[field], f"lineage.{field}")
     delta = payload["delta"]
     if set(delta) != {"status", "shared_keys", "residue_keys", "serialized_savings_bytes", "learning_demonstrated"} or delta["status"] != "revision_only_delta" or delta["learning_demonstrated"] is not False:
-        raise StereoGeometryError("VIZZ portfolio context delta is invalid")
+        raise StereoGeometryError("VISUAL portfolio context delta is invalid")
     _text(delta["status"], "delta.status")
     _int(delta["shared_keys"], "delta.shared_keys"); _int(delta["residue_keys"], "delta.residue_keys"); _int(delta["serialized_savings_bytes"], "delta.serialized_savings_bytes")
     preview = payload["preview"]
-    if set(preview) != {"task_id", "state", "human_gate", "project_id", "relation_status", "preview_only", "execution_allowed", "task_execution"} or preview["task_id"] != "vizz_calibration" or preview["state"] != "vizz_measurement_refused" or preview["human_gate"] != "physical_calibration_evidence" or preview["preview_only"] is not True or preview["execution_allowed"] is not False or preview["task_execution"] is not False:
-        raise StereoGeometryError("VIZZ portfolio context preview is invalid")
+    if set(preview) != {"task_id", "state", "human_gate", "project_id", "relation_status", "preview_only", "execution_allowed", "task_execution"} or preview["task_id"] != "visual_calibration" or preview["state"] != "visual_measurement_refused" or preview["human_gate"] != "physical_calibration_evidence" or preview["preview_only"] is not True or preview["execution_allowed"] is not False or preview["task_execution"] is not False:
+        raise StereoGeometryError("VISUAL portfolio context preview is invalid")
     for field in ("task_id", "state", "human_gate", "relation_status"):
         _text(preview[field], f"preview.{field}")
     if preview["project_id"] is not None:
         _text(preview["project_id"], "preview.project_id")
     if payload["controls"] != _CONTROL or payload["claims"] != _CLAIMS:
-        raise StereoGeometryError("VIZZ portfolio context controls are invalid")
+        raise StereoGeometryError("VISUAL portfolio context controls are invalid")
     return True
 
 

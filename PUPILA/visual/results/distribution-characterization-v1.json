@@ -1,5 +1,5 @@
 {
-  "schema": "vizz-distribution-characterization-v1",
+  "schema": "visual-distribution-characterization-v1",
   "scope": "synthetic_only",
   "sampling": {
     "seed": 20260913,

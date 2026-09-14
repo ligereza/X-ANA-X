@@ -1,5 +1,5 @@
 {
-  "schema": "vizz-capture-surface-probe-v1",
+  "schema": "visual-capture-surface-probe-v1",
   "scope": "capability_listing_only",
   "nodes": [
     {

@@ -1,4 +1,4 @@
-"""Shared synthetic camera fixture for bounded VIZZ experiments.
+"""Shared synthetic camera fixture for bounded VISUAL experiments.
 
 The experiments measure different questions, but they must not silently drift
 to different camera conventions.  This helper owns the common rig constants,
@@ -16,7 +16,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import CameraModel  # noqa: E402
+from visual import CameraModel  # noqa: E402
 
 
 IDENTITY = (

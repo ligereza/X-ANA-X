@@ -8,7 +8,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import StereoRig, calibration_audit, validate_calibration_audit  # noqa: E402
+from visual import StereoRig, calibration_audit, validate_calibration_audit  # noqa: E402
 
 from synthetic_rig import camera  # noqa: E402
 

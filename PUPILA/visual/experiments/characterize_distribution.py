@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deterministic synthetic distribution for VIZZ calibration/noise sensitivity."""
+"""Deterministic synthetic distribution for VISUAL calibration/noise sensitivity."""
 
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import ray_from_pixel, triangulate_rays  # noqa: E402
+from visual import ray_from_pixel, triangulate_rays  # noqa: E402
 
 from synthetic_rig import camera, project  # noqa: E402
 
@@ -56,7 +56,7 @@ def run() -> dict:
         return {"min": float(np.min(values)), "median": float(np.quantile(values, 0.5)), "p95": float(np.quantile(values, 0.95)), "max": float(np.max(values))}
 
     result = {
-        "schema": "vizz-distribution-characterization-v1",
+        "schema": "visual-distribution-characterization-v1",
         "scope": "synthetic_only",
         "sampling": {"seed": seed, "requested": sample_count, "succeeded": len(rows), "failed_closed": len(failures), "pixel_noise_sigma_px": 0.2, "focal_sigma_fraction": 0.002, "yaw_sigma_deg": 0.1},
         "truth": {"point_world": truth.tolist(), "baseline_world": 0.2, "pixel_a": clean_a, "pixel_b": clean_b},

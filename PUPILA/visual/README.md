@@ -1,6 +1,6 @@
-# VIZZ
+# VISUAL
 
-VIZZ is the eye-tracking and visual-geometry engine for FARMAKSIA. Its core
+VISUAL is the eye-tracking and visual-geometry engine for FARMAKSIA. Its core
 turns observations from two cameras into geometric quantities that can be
 audited: rays, 3-D points, depth, inter-eye distance, and screen-plane
 intersections.

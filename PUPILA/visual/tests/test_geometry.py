@@ -7,7 +7,7 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from vizz import (  # noqa: E402
+from visual import (  # noqa: E402
     CameraModel,
     ScreenPlane,
     StereoGeometryError,
@@ -46,7 +46,7 @@ def camera(camera_id, center):
     )
 
 
-class VIZZGeometryTests(unittest.TestCase):
+class VISUALGeometryTests(unittest.TestCase):
     def operation_receipt(self):
         return {
             "schema": "mak-operation-receipt-v1",
@@ -79,37 +79,37 @@ class VIZZGeometryTests(unittest.TestCase):
             },
         }
 
-    def test_mak_operation_receipt_becomes_bounded_vizz_context(self):
+    def test_mak_operation_receipt_becomes_bounded_visual_context(self):
         context = adapt_operation_receipt(self.operation_receipt())
 
-        self.assertEqual(context["schema"], "vizz-operation-context-v1")
+        self.assertEqual(context["schema"], "visual-operation-context-v1")
         self.assertEqual(context["operation"]["expanded_count"], 2)
         self.assertTrue(validate_operation_context(context))
         self.assertFalse(context["controls"]["metric_depth_authorized"])
         self.assertTrue(context["controls"]["calibration_audit_required"])
         self.assertFalse(context["controls"]["semantic_equivalence_authorized"])
 
-    def test_vizz_rejects_operation_receipt_with_promotion_enabled(self):
+    def test_visual_rejects_operation_receipt_with_promotion_enabled(self):
         tampered = copy.deepcopy(self.operation_receipt())
         tampered["control"]["promotion"] = "publish"
 
         with self.assertRaisesRegex(StereoGeometryError, "control boundary"):
             adapt_operation_receipt(tampered)
 
-    def test_vizz_rejects_operation_receipt_from_another_dialect(self):
+    def test_visual_rejects_operation_receipt_from_another_dialect(self):
         tampered = copy.deepcopy(self.operation_receipt())
         tampered["operation"]["dialect"] = "semantic-icons-v1"
 
-        with self.assertRaisesRegex(StereoGeometryError, "outside the VIZZ context scope"):
+        with self.assertRaisesRegex(StereoGeometryError, "outside the VISUAL context scope"):
             adapt_operation_receipt(tampered)
 
-    def test_vizz_composes_mak_context_with_calibration_without_opening_gates(self):
+    def test_visual_composes_mak_context_with_calibration_without_opening_gates(self):
         context = adapt_operation_receipt(self.operation_receipt())
         audit = calibration_audit(StereoRig(camera("a", (0.0, 0.0, 0.0)), camera("b", (0.2, 0.0, 0.0))))
 
         composed = compose_operation_context_with_calibration(context, audit)
 
-        self.assertEqual(composed["schema"], "vizz-composed-context-v1")
+        self.assertEqual(composed["schema"], "visual-composed-context-v1")
         self.assertEqual(composed["mak_context"]["expanded_count"], 2)
         self.assertEqual(composed["calibration"]["status"], "CALIBRATION_EVIDENCE_REQUIRED")
         self.assertTrue(validate_composed_context(composed))
@@ -117,7 +117,7 @@ class VIZZGeometryTests(unittest.TestCase):
         self.assertFalse(composed["controls"]["publication"])
         self.assertFalse(composed["controls"]["domain_mix_authorized"])
 
-    def test_vizz_composition_rejects_tampered_calibration_authorization(self):
+    def test_visual_composition_rejects_tampered_calibration_authorization(self):
         context = adapt_operation_receipt(self.operation_receipt())
         audit = calibration_audit(StereoRig(camera("a", (0.0, 0.0, 0.0)), camera("b", (0.2, 0.0, 0.0))))
         tampered = copy.deepcopy(audit)
@@ -278,7 +278,7 @@ class VIZZGeometryTests(unittest.TestCase):
         rig = StereoRig(camera("webcam", (0.0, 0.0, 0.0)), camera("ir", (0.2, 0.0, 0.0)))
         audit = calibration_audit(rig)
 
-        self.assertEqual(audit["schema"], "vizz-calibration-audit-v1")
+        self.assertEqual(audit["schema"], "visual-calibration-audit-v1")
         self.assertEqual(audit["status"], "CALIBRATION_EVIDENCE_REQUIRED")
         self.assertEqual(audit["geometry_status"], "METRIC_STEREO_READY")
         self.assertFalse(audit["metric_depth_authorized"])

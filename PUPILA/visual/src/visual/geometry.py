@@ -19,7 +19,7 @@ class StereoGeometryError(ValueError):
     """The rig or an observation cannot support a metric result."""
 
 
-CALIBRATION_AUDIT_SCHEMA = "vizz-calibration-audit-v1"
+CALIBRATION_AUDIT_SCHEMA = "visual-calibration-audit-v1"
 
 
 def _finite_array(name: str, value: Any, shape: tuple[int, ...]) -> np.ndarray:
