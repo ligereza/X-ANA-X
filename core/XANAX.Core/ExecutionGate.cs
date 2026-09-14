@@ -22,7 +22,7 @@ public sealed record ExecutionGateResult(
 
 /// <summary>
 /// Deterministic safety boundary between a compiled mission and native transport.
-/// It cannot be learned away by MATRIX.
+/// It cannot be learned away by LEARNING.
 /// </summary>
 public static class ExecutionGate
 {
@@ -30,7 +30,7 @@ public static class ExecutionGate
         AdapterCommandPlan plan,
         CapabilitySnapshot capability,
         bool permitPhysicalOutput = false,
-        MatrixDecision? matrixDecision = null,
+        LearningDecision? matrixDecision = null,
         bool requireMatrixConsensus = false)
     {
         var reasons = new List<string>();

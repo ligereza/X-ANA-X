@@ -1,6 +1,6 @@
 namespace Xanax.Core;
 
-public sealed record MatrixNeuralPrediction(
+public sealed record NeuralPrediction(
     string Relation,
     double Confidence,
     bool HasEvidence,
@@ -10,11 +10,11 @@ public sealed record MatrixNeuralPrediction(
     bool WithinLearnedDomain);
 
 /// <summary>
-/// Small online neural classifier for MATRIX. It starts with no host knowledge;
+/// Small online neural classifier for LEARNING. It starts with no host knowledge;
 /// weights are trained only from verified mission cases and can be rebuilt from
 /// the persisted evidence store.
 /// </summary>
-public sealed class MatrixRelationNeuralModel
+public sealed class RelationNeuralModel
 {
     public const int InputSize = 20;
 
@@ -29,7 +29,7 @@ public sealed class MatrixRelationNeuralModel
     private double[][] hiddenOutput;
     private double[] outputBias;
 
-    public MatrixRelationNeuralModel(int hiddenSize = 12, int seed = 20260910, double noveltyThreshold = 0.75)
+    public RelationNeuralModel(int hiddenSize = 12, int seed = 20260910, double noveltyThreshold = 0.75)
     {
         if (hiddenSize < 2)
             throw new ArgumentOutOfRangeException(nameof(hiddenSize));
@@ -93,7 +93,7 @@ public sealed class MatrixRelationNeuralModel
         }
     }
 
-    public MatrixNeuralPrediction Predict(MissionCase missionCase)
+    public NeuralPrediction Predict(MissionCase missionCase)
     {
         if (labels.Count == 0)
             return new("unknown", 0d, false, 0, false, double.PositiveInfinity, false);

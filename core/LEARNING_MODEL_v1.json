@@ -1,6 +1,6 @@
 {
   "schema": "matrix.learning_model.v1",
-  "model_name": "MATRIX-REL",
+  "model_name": "LEARNING-REL",
   "model_type": "hybrid_neuro_symbolic_mission_transformer",
   "status": "design_ready_for_prototype",
   "mission": "Learn and execute relationships between human missions and different visual control surfaces without modifying the host software.",
@@ -174,10 +174,10 @@
         "shared_signature": ["density", "spatial_topology", "persistence", "feedback"]
       }
     },
-    "matrix_learning_rule": "MATRIX learns the live-show signature and its translation; host labels are evidence, not the semantic target."
+    "learning_rule": "LEARNING learns the live-show signature and its translation; host labels are evidence, not the semantic target."
   },
   "canonical_lighting_algebra": {
-    "schema": "matrix.lighting_algebra.v1",
+    "schema": "learning.lighting_algebra.v1",
     "purpose": "Represent Avolites and grandMA3 as different operators over the same lighting system.",
     "universe": {
       "index_set": "U = {1, 2, ..., 512}",
