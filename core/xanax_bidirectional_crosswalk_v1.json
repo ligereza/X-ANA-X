@@ -3,7 +3,7 @@
   "status": "documentary_baseline_not_live_calibrated",
   "principle": "Translate operator intent, object, context and state; never invert screen coordinates directly.",
   "mission_engine": {
-    "schema": "matrix.mission_engine.v1",
+    "schema": "learning.mission_engine.v1",
     "learning_unit": "mission_case",
     "software_role": "A_and_B_are_surface_adapters_not_the_curriculum",
     "function": "f(mission, context, source_surface) -> target_action_set",
@@ -46,7 +46,7 @@
       "verification": "target_feedback_matches_function_1",
       "failure_rule": "if_target_feedback_is_absent_or_wrong_block_and_mark_loss"
     },
-    "matrix_training_rule": "MATRIX_learns_relations_between_mission_cases_not_complete_host_manuals"
+    "learning_rule": "LEARNING_learns_relations_between_mission_cases_not_complete_host_manuals"
   },
   "route_priority": [
     {

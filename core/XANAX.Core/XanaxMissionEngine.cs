@@ -8,8 +8,8 @@ public sealed record XanaxMissionRequest(
     IReadOnlyDictionary<string, string> Arguments,
     CapabilitySnapshot Capability,
     bool PermitPhysicalOutput = false,
-    MatrixDecision? MatrixDecision = null,
-    bool RequireMatrixConsensus = false,
+    LearningDecision? LearningDecision = null,
+    bool RequireLearningConsensus = false,
     IReadOnlyList<double>? TrajectoryTimes = null,
     bool AllowApproximateRealization = false);
 
@@ -21,7 +21,7 @@ public sealed record XanaxMissionResult(
     CapabilitySnapshot Capability,
     bool PermitPhysicalOutput,
     MissionRealization Realization,
-    MatrixDecision? MatrixDecision,
+    LearningDecision? LearningDecision,
     AdapterTrajectoryPlan? Trajectory);
 
 /// <summary>
@@ -81,23 +81,23 @@ public sealed class XanaxMissionEngine
         }
         commands = commands with
         {
-            MatrixDecision = request.MatrixDecision,
-            RequireMatrixConsensus = request.RequireMatrixConsensus,
+            LearningDecision = request.LearningDecision,
+            RequireLearningConsensus = request.RequireLearningConsensus,
             AllowApproximateRealization = request.AllowApproximateRealization
         };
         var gate = ExecutionGate.Evaluate(
             commands,
             request.Capability,
             request.PermitPhysicalOutput,
-            request.MatrixDecision,
-            request.RequireMatrixConsensus);
+            request.LearningDecision,
+            request.RequireLearningConsensus);
         var realization = MissionRealization.Evaluate(plan, canonical, commands.Commands);
-        return new(plan, canonical, commands, gate, request.Capability, request.PermitPhysicalOutput, realization, request.MatrixDecision, trajectory);
+        return new(plan, canonical, commands, gate, request.Capability, request.PermitPhysicalOutput, realization, request.LearningDecision, trajectory);
     }
 
     public XanaxMissionResult BuildWithMatrix(
         XanaxMissionRequest request,
-        MatrixLearningSession matrix,
+        LearningSession matrix,
         MissionCase query,
         int neighborhood = 5,
         double minimumConfidence = 0.75,
@@ -107,8 +107,8 @@ public sealed class XanaxMissionEngine
         var decision = matrix.Decide(query, neighborhood, minimumConfidence, minimumEvidenceCases);
         return Build(request with
         {
-            MatrixDecision = decision,
-            RequireMatrixConsensus = true
+            LearningDecision = decision,
+            RequireLearningConsensus = true
         });
     }
 

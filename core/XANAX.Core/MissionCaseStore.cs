@@ -19,7 +19,7 @@ public sealed partial record MissionCase(
     string EvidenceLevel,
     IReadOnlyList<string> Evidence,
     DateTimeOffset CapturedAt,
-    string ModelVersion = "matrix-rel-v1");
+    string ModelVersion = "learning-rel-v1");
 
 public static class MissionCaseSignature
 {
@@ -41,7 +41,7 @@ public static class MissionCaseSignature
         {
             Signature = textual,
             NumericSignature = numeric,
-            ModelVersion = "matrix-rel-v2"
+            ModelVersion = "learning-rel-v2"
         };
     }
 }
