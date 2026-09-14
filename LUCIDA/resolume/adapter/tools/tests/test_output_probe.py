@@ -29,7 +29,7 @@ def _wmi_payload():
         "monitors": [
             {
                 "ManufacturerName": [78, 86, 0],
-                "UserFriendlyName": [77, 79, 83, 65, 73, 75, 0],
+                "UserFriendlyName": [82, 69, 83, 79, 76, 85, 77, 69, 95, 65, 68, 65, 80, 84, 69, 82, 0],
                 "ProductCodeID": [1, 2, 0],
                 "Active": True,
             }
