@@ -167,7 +167,7 @@ RESOLUME adapter emits this object as `resolume_preview.projection` and keeps
 RESOLUME-specific tape metadata beside it; tape frames are not part of the
 shared projection.
 
-ADOBE, PUPILA, and VIZZ can consume the serialized `projection` object by
+ADOBE, PUPILA, and VISUAL can consume the serialized `projection` object by
 validating the shared schema or calling `SurfaceProjectionV1.from_dict()`.
 Their adapters should map `surface_id` to their own surface and preserve the
 proposal-only and explicit-approval guarantees. They do not need to import
@@ -187,7 +187,7 @@ fictional consumer projection using only `SurfaceProjectionV1` fields. It
 reports host/surface identity, proposal status, approval, reversibility, and
 side-effect guarantees. RESOLUME tape metadata remains outside the projection
 object. The conformance check is offline schema compatibility evidence only;
-it does not connect ADOBE, PUPILA, VIZZ, RESOLUME, hardware, or any live host.
+it does not connect ADOBE, PUPILA, VISUAL, RESOLUME, hardware, or any live host.
 
 ## Offline postulation evidence bundle
 

@@ -275,7 +275,7 @@ def build_evidence_manifest(
             "Offline preview only; live Resolume was not tested.",
             "Live Resolume and hardware were not tested.",
             "No network, GPU, camera, or subprocess execution was performed.",
-            "ADOBE, PUPILA, and VIZZ host applications were not opened; only bounded summary signals were replayed.",
+            "ADOBE, PUPILA, and VISUAL host applications were not opened; only bounded summary signals were replayed.",
         ],
     }
 

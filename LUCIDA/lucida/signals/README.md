@@ -80,7 +80,7 @@ LUCIDA -> proposal -> explicit result`.
 ## Adobe summary connector
 
 lucida.signals.adobe consumes the normalized summary returned by the ADOBE
-bridge for xio, vizz, or pupila. The connector accepts only scalar,
+bridge for xio, visual, or pupila. The connector accepts only scalar,
 allow-listed metadata, requires redaction.rawContentForwarded=false, and
 requires an explicit metadata.phase before entering the common replay.
 Adobe remains the host connector; LUCIDA only converts the summary into a
