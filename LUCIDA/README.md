@@ -18,11 +18,11 @@ LUCIDA proposes and records. It does not silently control a host application,
 discover peers, open network sockets or execute an action without an explicit
 host policy and authorization.
 
-## MOSAIK project-event bridge
+## RESOLUME_ADAPTER project-event bridge
 
-MOSAIK's `vj-project` command emits one canonical `VJEvent` from an INSTAR,
+RESOLUME_ADAPTER's `vj-project` command emits one canonical `VJEvent` from an INSTAR,
 NAYADE or IMAGO document. LUCIDA can now consume those events through
-`lucida.signals.mosaik.MosaikEventConsumer`, append them to its deterministic
+`lucida.signals.resolume_adapter.ResolumeAdapterEventConsumer`, append them to its deterministic
 proposal-only replay, and retain the source stage in the signal address and
 audit metadata. The bridge accepts no paths, does not open a transport, and
 does not execute Resolume or liveshow actions.

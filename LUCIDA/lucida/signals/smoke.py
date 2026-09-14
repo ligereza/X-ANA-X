@@ -27,7 +27,7 @@ DEFAULT_REPORT_FIXTURE = (
     / "tests"
     / "lucida"
     / "fixtures"
-    / "mosaik-semantic-light-field-report.json"
+    / "resolume_adapter-semantic-light-field-report.json"
 )
 DEFAULT_ENVELOPE_FIXTURE = (
     REPOSITORY_ROOT
