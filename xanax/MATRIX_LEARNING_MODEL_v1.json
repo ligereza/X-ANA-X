@@ -1,0 +1,526 @@
+{
+  "schema": "matrix.learning_model.v1",
+  "model_name": "MATRIX-REL",
+  "model_type": "hybrid_neuro_symbolic_mission_transformer",
+  "status": "design_ready_for_prototype",
+  "mission": "Learn and execute relationships between human missions and different visual control surfaces without modifying the host software.",
+  "software_role": "Avolites and grandMA3 are surface adapters and test domains, not the training curriculum.",
+  "model_boundary": {
+    "learned_component": [
+      "visual_affordance_embedding",
+      "mission_similarity",
+      "relation_classification",
+      "feedback_prediction"
+    ],
+    "symbolic_component": [
+      "set_relation_engine",
+      "gesture_transformer",
+      "coordinate_and_dpi_transform",
+      "precondition_graph",
+      "loss_and_reversibility_accounting"
+    ],
+    "never_learned_or_overridden": [
+      "windows_integrity_policy",
+      "foreground_target_check",
+      "secure_desktop_block",
+      "physical_output_safety_gate",
+      "kill_switch",
+      "unknown_mapping_execution"
+    ]
+  },
+  "mathematical_core": {
+    "surface_graph": "G_X = (V_X, E_X)",
+    "affordance_node": "v = (role, region, state, gesture_set, feedback_set, preconditions)",
+    "mission_case": "c = (mission, source_graph, target_graph, context, relation, gesture_transform, feedback, loss)",
+    "mission_mapping": "T(m, context, G_source, G_target) -> {preconditions, target_gestures, feedback, loss}",
+    "relation_set": [
+      "common",
+      "reordered",
+      "renamed",
+      "split",
+      "merged",
+      "composed",
+      "context_shift",
+      "A_only",
+      "B_only",
+      "lossy",
+      "unknown"
+    ],
+    "set_operations": {
+      "common": "A_intersection_B",
+      "a_only": "A_minus_B",
+      "b_only": "B_minus_A",
+      "reordered": "same_effect_different_slot_permutation",
+      "split": "one_source_action_to_ordered_target_sequence",
+      "merged": "many_source_actions_to_one_target_action",
+      "composed": "target_effect_reconstructed_from_target_primitives",
+      "context_shift": "same_surface_gesture_has_different_effect_under_state",
+      "lossy": "information(target_or_return) < information(source)"
+    },
+    "input_equation": "source_gesture -> mission_id -> relation -> target_gesture_sequence",
+    "visual_equation": "source_surface -> mission_projection -> target_surface_projection",
+    "reordered_example": {
+      "source": {"function_1": "slot_left", "function_2": "slot_right"},
+      "target": {"function_1": "slot_right", "function_2": "slot_left"},
+      "relation": "reordered",
+      "visual_transform": "permute(function_1, function_2)",
+      "input_transform": "click(slot_left) -> click(target.slot_right)",
+      "acceptance": "target_feedback == feedback(function_1)"
+    },
+    "learned_loss": "lambda_relation * cross_entropy(relation_prediction, relation_label) + lambda_embedding * contrastive_distance(source_mission, target_mission) + lambda_feedback * binary_cross_entropy(feedback_prediction, observed_feedback)",
+    "execution_score": "w_semantic*semantic_match + w_visual*visual_match + w_feedback*feedback_match - w_risk*risk_score",
+    "hard_rule": "A high score never bypasses a Windows or physical-output safety gate."
+  },
+  "live_show_language": {
+    "purpose": "Compare A and B by the live-show behavior they produce, not by software names or internal objects.",
+    "principle": "A function is equivalent only when its mission and performance signature remain equivalent under the same context.",
+    "warning": "Frequency is interpreted as rate of change or modulation when appropriate; not every function must be forced into an audio metaphor.",
+    "signature_axes": [
+      {
+        "axis": "onset",
+        "meaning": "how the function begins",
+        "values": ["instant", "quantized", "ramped", "conditional", "manual"]
+      },
+      {
+        "axis": "rhythm",
+        "meaning": "pulse, subdivision, repetition or event spacing",
+        "values": ["one_shot", "pulse", "sequence", "loop", "free_running", "beat_locked"]
+      },
+      {
+        "axis": "rate_frequency",
+        "meaning": "speed of change, modulation or recurrence",
+        "unit": "normalized_rate_or_beats_per_minute_when_known",
+        "values": ["static", "slow", "medium", "fast", "variable", "external_clock"]
+      },
+      {
+        "axis": "envelope",
+        "meaning": "attack, hold, decay and release behavior",
+        "values": ["step", "fade_in", "hold", "fade_out", "sustain", "release"]
+      },
+      {
+        "axis": "amplitude_energy",
+        "meaning": "magnitude or intensity of the resulting change",
+        "values": ["none", "low", "high", "bounded", "relative", "absolute"]
+      },
+      {
+        "axis": "phase",
+        "meaning": "relative offset between elements or repeated events",
+        "values": ["aligned", "offset", "fan", "alternating", "randomized", "contextual"]
+      },
+      {
+        "axis": "density",
+        "meaning": "how many elements act at once",
+        "values": ["single", "sparse", "group", "full_set", "hierarchical"]
+      },
+      {
+        "axis": "spatial_topology",
+        "meaning": "distribution through order, grid, wings, paths or regions",
+        "values": ["none", "linear", "grid", "radial", "mirrored", "ordered", "reordered"]
+      },
+      {
+        "axis": "persistence",
+        "meaning": "how long the result remains active or reusable",
+        "values": ["momentary", "held", "latched", "stored", "tracked", "generative"]
+      },
+      {
+        "axis": "causality",
+        "meaning": "what drives the change",
+        "values": ["operator", "clock", "sequence", "signal", "state_change", "feedback"]
+      },
+      {
+        "axis": "memory_behavior",
+        "meaning": "whether the function stores a snapshot or a rule",
+        "values": ["none", "snapshot", "reference", "recipe", "procedural", "contextual"]
+      },
+      {
+        "axis": "feedback",
+        "meaning": "how the operator knows the mission occurred",
+        "values": ["visual", "state_change", "output_change", "timed", "audible", "none"]
+      }
+    ],
+    "signature_vector": "L(f, context) = [onset, rhythm, rate, envelope, amplitude, phase, density, spatial_topology, persistence, causality, memory_behavior, feedback]",
+    "trajectory_model": "S_f(t) = [selection(t), value(t), spatial_state(t), energy(t), active_control(t), feedback(t)]",
+    "comparison_metric": "D(A,B) = min_time_warp(sum_t(weight_axis * distance(S_A(t), S_B(warp(t)))) + structural_penalties)",
+    "equivalence_rules": {
+      "A_equals_B": "same mission + same critical axes + D <= tau_common + observed feedback matches",
+      "A_approximately_equals_B": "same mission + perceptual signature close + noncritical loss is visible",
+      "A_maps_to_B": "same mission but different decomposition, timing, or gesture sequence",
+      "A_not_equals_B": "different mission, critical axis conflict, or D >= tau_diff",
+      "unknown": "insufficient trajectory or feedback evidence"
+    },
+    "critical_axes": ["mission", "causality", "persistence", "feedback"],
+    "examples": {
+      "reordered_buttons": {
+        "relation": "A_equals_B_at_mission_level",
+        "difference": "surface_slot_only",
+        "live_signature": "unchanged"
+      },
+      "fan_vs_matricks": {
+        "relation": "A_approximately_equals_B_or_A_maps_to_B",
+        "shared_signature": ["phase", "spatial_topology", "density", "envelope"],
+        "must_compare": ["selection_order", "grid", "wings", "blocks", "subfixture_scope"]
+      },
+      "palette_vs_preset_recipe": {
+        "relation": "not_equal_by_default",
+        "shared_signature": ["memory_behavior", "persistence"],
+        "difference": "snapshot_or_reference_vs_contextual_or_procedural_rule"
+      },
+      "cue_vs_executor": {
+        "relation": "role_shift_or_composed",
+        "difference": "cue_is_temporal_content; executor_is_control_surface_or_trigger"
+      },
+      "group_selection": {
+        "relation": "equal_if_membership_and_order_match; partial_if_grid_metadata_is_lost",
+        "shared_signature": ["density", "spatial_topology", "persistence", "feedback"]
+      }
+    },
+    "matrix_learning_rule": "MATRIX learns the live-show signature and its translation; host labels are evidence, not the semantic target."
+  },
+  "canonical_lighting_algebra": {
+    "schema": "matrix.lighting_algebra.v1",
+    "purpose": "Represent Avolites and grandMA3 as different operators over the same lighting system.",
+    "universe": {
+      "index_set": "U = {1, 2, ..., 512}",
+      "channel_count": 512,
+      "channel_bits": 8,
+      "channel_domain": "{0, ..., 255}",
+      "sixteen_bit_domain": "{0, ..., 65535}"
+    },
+    "fixtures": {
+      "set": "F = {f_1, f_2, ..., f_N}",
+      "attributes": "A = {Intensity, Pan, Tilt, Red, Green, Blue, ...}",
+      "geometry": "G: F -> R^2",
+      "selection": "S subset_of F",
+      "selection_order": "pi: S -> {1, ..., |S|}"
+    },
+    "patch_and_values": {
+      "patch_address": "P: F x A -> channel_address",
+      "patch_address_domain": "U or ordered_tuple_of_U_for_multi_channel_attribute",
+      "important_distinction": "P maps an attribute to its DMX address; it does not contain the live value.",
+      "value_function": "V: F x A x T -> value_domain",
+      "dmx_projection": "D(P(f,a),t) = encode(V(f,a,t))",
+      "eight_bit": "encode_8(x) = round(255*x) for x in [0,1]",
+      "sixteen_bit": {
+        "address": "P(f,a) = (coarse_channel, fine_channel)",
+        "value": "v = 256 * D(coarse_channel,t) + D(fine_channel,t)",
+        "domain": "0..65535",
+        "note": "coarse/fine order is part of the fixture personality and must be observed"
+      },
+      "example": {
+        "address": "P(f_3,Intensity) = 127",
+        "meaning": "fixture f_3 intensity is assigned to channel 127",
+        "live_value": "D(127,t) = V(f_3,Intensity,t)"
+      }
+    },
+    "universe_state": {
+      "raw_vector": "D(t) = [d_1(t), d_2(t), ..., d_512(t)]",
+      "domain": "D(t) in {0, ..., 255}^512",
+      "multiple_universes": "D(t) in {0, ..., 255}^{512 x M}",
+      "final_output": "D_out(t) = Merge(D_sources(t), priority, HTP_LTP, worlds, filters)",
+      "comparison_rule": "Compare final observed output when the mission is physical equivalence."
+    },
+    "canonical_language": {
+      "tuple": "L = (U, F, A, P, S, pi, G, V, T)",
+      "components": {
+        "U": "DMX channel space",
+        "F": "fixture population",
+        "A": "attribute space",
+        "P": "patch address function",
+        "S": "selected fixture subset",
+        "pi": "selection order",
+        "G": "fixture geometry or grid",
+        "V": "attribute value function",
+        "T": "time and temporal transformation"
+      }
+    },
+    "console_operators": {
+      "Avolites": "A: L_A -> D_A(t)",
+      "grandMA3": "B: L_B -> D_B(t)",
+      "comparison_question": "A(X) ~= B(Y)",
+      "not_required": "L_A and L_B need not have the same objects, names or internal procedure"
+    },
+    "equivalence_levels": {
+      "physical_exact": "D_A_out(t) == D_B_out(t) over the comparison interval",
+      "physical_tolerant": "distance(D_A_out(t), D_B_out(t)) <= epsilon over the comparison interval",
+      "temporal": "same output trajectory after permitted time_warp",
+      "interaction": "same mission but different control path",
+      "structural": "same canonical state and dependency representation",
+      "rule": "Never call interaction or structural similarity physical equality without output evidence"
+    },
+    "distribution_operator": {
+      "normalized_order": "s_i = (i - 1)/(N - 1)",
+      "linear": "g(s) = s",
+      "wing": "g(s) = abs(2s - 1)",
+      "inverse_wing": "g(s) = 1 - abs(2s - 1)",
+      "blocks": "g(i) = floor((i - 1)/k)",
+      "grid": "V_i = g(x_i, y_i)",
+      "A_form": "V_i = g(pi(i))",
+      "B_form": "V_i = g(pi(i), x_i, y_i, phase_i, context)",
+      "interpretation": "B may contain more structural variables; equivalence must compare the resulting trajectory, not the parameter count."
+    },
+    "state_or_rule": {
+      "state": "C_A = [c_1, c_2, ..., c_N]",
+      "rule": "C_B = R(F, G, S, theta)",
+      "state_form": "C = c",
+      "rule_form": "C = f(X)",
+      "equivalence": "A stored state and a recalculating rule are equal only for a defined context and observed output interval."
+    },
+    "temporal_operator": {
+      "cue_state": "Q_k",
+      "event": "(Q_k, tau_k)",
+      "sequence": "Q = {(Q_1,tau_1), ..., (Q_m,tau_m)}",
+      "interpolation": "D(t) = (1 - alpha)Q_k + alpha Q_(k+1)",
+      "alpha": "alpha = (t - t_k)/tau_k",
+      "console_specific_transform": "T_A or T_B",
+      "output": "D_A(t) = T_A(Q,t); D_B(t) = T_B(Q,t)"
+    },
+    "learning_target": {
+      "learn": [
+        "canonical state and rule representations",
+        "selection order and geometry transformations",
+        "value distributions and temporal trajectories",
+        "conditions under which A and B are physically equivalent",
+        "loss when one representation has extra variables"
+      ],
+      "do_not_learn_as_primary_target": [
+        "button names",
+        "menu names",
+        "vendor object names",
+        "screen coordinates without canonical output"
+      ],
+      "required_evidence": "DMX trajectory or another explicitly measured output, plus context and timing"
+    }
+  },
+  "variables": {
+    "mission": "human goal expressed as an abstract operation",
+    "primitive": "select, modify, store, recall, trigger, release, inspect, navigate",
+    "source_frame": "captured source surface frame",
+    "target_frame": "captured target surface frame",
+    "source_graph": "detected or declared affordance graph of source",
+    "target_graph": "detected or declared affordance graph of target",
+    "source_gesture": "mouse, keyboard or ordered gesture sequence",
+    "target_gesture": "translated target gesture or native invocation",
+    "source_context": "active page, layer, selection, focus and mode",
+    "target_context": "target page, layer, selection, focus and mode",
+    "relation": "functional relation label",
+    "semantic_score": "match between mission and target affordance",
+    "visual_score": "match between visual evidence and affordance region",
+    "feedback_score": "match between observed and expected result",
+    "risk_score": "potential harm from a wrong or unreversible action",
+    "loss": "state or meaning not preserved by translation",
+    "window_handle": "current target HWND",
+    "process_id": "target process identity",
+    "integrity_level": "low, medium, high or system",
+    "foreground_hwnd": "actual foreground window at execution time",
+    "dpi_context": "process or per-monitor DPI awareness context",
+    "monitor_id": "monitor containing the target surface",
+    "window_rect_physical": "target rectangle in physical pixels",
+    "window_rect_logical": "target rectangle in logical coordinates",
+    "ui_automation_tree": "available semantic UIA elements and patterns",
+    "capture_state": "capture permission, item identity and frame freshness",
+    "output_state": "known state of physical or simulated output",
+    "latency_ms": "time from input to observed feedback",
+    "mapping_age": "time since mapping was last verified",
+    "model_version": "version of learned parameters",
+    "evidence_level": "documented, observed, replayed or human_confirmed"
+  },
+  "constants": {
+    "relation_labels": "fixed enum defined in mathematical_core.relation_set",
+    "mission_primitives": "fixed initial vocabulary; expandable only by a labeled case",
+    "route_priority": [
+      "native_semantic_route",
+      "UIA_pattern_route",
+      "calibrated_surface_input"
+    ],
+    "forbidden_route": "blind_coordinate_injection_without_mission_and_feedback",
+    "default_execution_mode": "observe_only",
+    "default_output_mode": "physical_output_blocked",
+    "default_overlay_mode": "click_through",
+    "default_learning_mode": "offline_replay_and_reversible_test",
+    "minimum_feedback_requirement": "one target-state observation after every write-like action",
+    "unknown_relation_policy": "visualize_and_block",
+    "lossy_relation_policy": "visualize_loss_and_require_explicit_confirmation",
+    "model_cannot_change": [
+      "integrity_level_policy",
+      "secure_desktop_policy",
+      "foreground_target_policy",
+      "physical_output_policy",
+      "kill_switch_policy"
+    ]
+  },
+  "learning_protocol": {
+    "phase_0_seed": {
+      "name": "deterministic mission grammar",
+      "training": "no neural weights required",
+      "content": "mission primitives, relation labels, gesture grammar, safety gates",
+      "purpose": "make the prototype executable before learning"
+    },
+    "phase_1_cases": {
+      "name": "supervised mission cases",
+      "sample": "source frame + target frame + mission label + relation label + gesture + observed feedback",
+      "negative_samples": [
+        "same-looking control with different result",
+        "correct mission in wrong context",
+        "correct target region with wrong hierarchy",
+        "action without expected feedback"
+      ],
+      "promotion": "a case becomes reusable only after observed feedback or human confirmation"
+    },
+    "phase_2_embedding": {
+      "name": "mission similarity representation",
+      "method": "contrastive embedding over mission cases",
+      "base_encoder": "small offline vision-language or visual encoder, frozen initially",
+      "fine_tuning": "optional lightweight adapter only after enough verified cases",
+      "goal": "retrieve similar missions without teaching complete host manuals"
+    },
+    "phase_3_relation": {
+      "name": "relation classifier",
+      "method": "supervised classifier over structured features and embeddings",
+      "output": "relation label plus calibrated score",
+      "execution": "classifier proposes; deterministic safety gate disposes"
+    },
+    "phase_4_active_learning": {
+      "name": "bounded active learning",
+      "method": "propose only reversible or observe-only cases",
+      "human_role": "label relation or reject case",
+      "prohibited": "self-approve a new route or self-enable physical output"
+    }
+  },
+  "windows_protocol": {
+    "capture": {
+      "preferred": "Windows.Graphics.Capture for a user-selected application window",
+      "requirements": ["interactive_desktop", "user_consent_or_declared_capture_capability", "fresh_capture_item"],
+      "known_effect": "system may draw a yellow capture border",
+      "fallback": "Desktop Duplication or calibrated screenshot path",
+      "block_conditions": ["capture_unsupported", "protected_content", "capture_item_lost", "stale_frame"]
+    },
+    "semantic_observation": {
+      "preferred": "UI Automation element tree and control patterns",
+      "use": ["Name", "AutomationId", "ControlType", "BoundingRectangle", "Invoke", "Selection", "Value", "RangeValue", "Scroll"],
+      "limit": "custom controls may expose no provider or incomplete patterns",
+      "policy": "absence_of_UIA_is_not_evidence_of_absence_of_function"
+    },
+    "focus": {
+      "required_before_write": ["target_window_exists", "target_process_matches_manifest", "foreground_hwnd_matches_target", "focus_observed"],
+      "restriction": "SetForegroundWindow_is_subject_to_Windows_foreground_rules",
+      "failure": "block_and_return_to_observe_only"
+    },
+    "input": {
+      "preferred": "UIA_Invoke_or_semantic_pattern",
+      "fallback": "calibrated_mouse_keyboard_input_only_after_foreground_verification",
+      "SendInput_limits": [
+        "subject_to_UIPI_integrity_levels",
+        "requires_interactive_unlocked_desktop",
+        "routes_to_foreground_window",
+        "does_not_work_on_secure_desktop",
+        "system_reserved_shortcuts_are_blocked_by_default"
+      ],
+      "post_message_limit": "window-scoped messages may not trigger low-level hooks or raw-key-state consumers",
+      "never": ["blind_coordinates", "input_to_unknown_foreground", "input_during_secure_desktop"]
+    },
+    "overlay": {
+      "on": "layered_topmost window captures input only inside verified mission hit regions",
+      "off": "WS_EX_TRANSPARENT/click-through and no activation",
+      "peek": "show target surface, remove transformed hit map, mark corresponding target region",
+      "rule": "visual_overlay_alone_does_not_change_host_input"
+    },
+    "coordinates": {
+      "required": ["physical_pixels", "logical_pixels", "window_rect", "client_rect", "dpi_awareness", "monitor_id", "scale_factor"],
+      "transform": "logical_to_physical -> client_to_screen -> mission_region -> target_client",
+      "DPI_policy": "per_monitor_aware_v2_or_explicit_conversion",
+      "recalibrate_on": ["window_move", "resize", "monitor_change", "DPI_change", "fullscreen_change", "remote_desktop_change"]
+    },
+    "integrity": {
+      "default": "run_at_same_integrity_level_as_target",
+      "elevated_target": "do_not_auto_elevate; require signed UIAccess build or use a native semantic route",
+      "UIAccess_requirements": ["signed_binary", "trusted_secure_install_location", "manifest_uiAccess_true"],
+      "secure_desktop": "never automate UAC, LogonUI or secure-attention surfaces"
+    }
+  },
+  "hard_safety_gates": [
+    {
+      "id": "GATE-001",
+      "condition": "target_process_and_window_identity_verified",
+      "failure": "block_input"
+    },
+    {
+      "id": "GATE-002",
+      "condition": "interactive_unlocked_desktop_and_not_secure_desktop",
+      "failure": "block_SendInput_and_surface_input"
+    },
+    {
+      "id": "GATE-003",
+      "condition": "foreground_hwnd_matches_target_at_moment_of_injection",
+      "failure": "block_and_return_to_peek"
+    },
+    {
+      "id": "GATE-004",
+      "condition": "mapping_relation_not_unknown_and_target_preconditions_observed",
+      "failure": "visualize_and_block"
+    },
+    {
+      "id": "GATE-005",
+      "condition": "physical_output_explicitly_declared_safe_or_disabled",
+      "failure": "block_any_write_like_action"
+    },
+    {
+      "id": "GATE-006",
+      "condition": "target_feedback_observed_after_action",
+      "failure": "mark_case_failed_and_do_not_promote"
+    }
+  ],
+  "prototype_scope": {
+    "first_missions": [
+      "select_known_set",
+      "navigate_to_known_function",
+      "modify_single_visual_value",
+      "peek_real_position",
+      "return_to_native_surface"
+    ],
+    "first_relation": "reordered",
+    "first_input": ["mouse", "keyboard"],
+    "first_output": "visual_only_or_simulator",
+    "first_model": "deterministic_relation_engine_with_case_memory",
+    "neural_model_requirement": "none_for_first_prototype; add frozen encoder after verified cases exist",
+    "success_condition": "same mission, transformed visual surface, transformed input, observed feedback, zero host modification"
+  },
+  "observed_local_targets": {
+    "titan": {
+      "version": "19.1.205.5",
+      "runtime_observation": "Titan services were stopped and no listener was active during inventory",
+      "local_graphics_evidence": [
+        "Microsoft.NETCore.App 8.0",
+        "Avolites.General.WpfControlLibrary",
+        "Avolites.General.IconLibrary.WPF",
+        "Avolites.Screens.Layout.Wpf",
+        "Avolites.Screens.Gdi",
+        "Titan Go and Simulator also contain SkiaSharp and CefSharp.Wpf"
+      ]
+    },
+    "grandma3": {
+      "version": "2.4.2.2",
+      "runtime_observation": "onPC executable and separate web_daemon package present",
+      "local_graphics_evidence": [
+        "app_gma3.exe",
+        "app_gma3.dat",
+        "web_daemon/libcef.dll",
+        "web_daemon/libEGL.dll",
+        "web_daemon/libGLESv2.dll",
+        "web_daemon/vulkan-1.dll"
+      ],
+      "interpretation": "web_daemon graphics components are not treated as proof that the main grandMA3 UI is rendered by CEF"
+    }
+  },
+  "official_references": [
+    "https://learn.microsoft.com/en-us/windows/apps/dev-tools/winapp-cli/ui-automation",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-sendinput",
+    "https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setforegroundwindow",
+    "https://learn.microsoft.com/en-us/dotnet/framework/ui-automation/ui-automation-security-overview",
+    "https://learn.microsoft.com/en-us/windows/uwp/audio-video-camera/screen-capture",
+    "https://learn.microsoft.com/en-us/windows/win32/winauto/uiauto-providersoverview",
+    "https://learn.microsoft.com/en-us/windows/win32/hidpi/high-dpi-reference",
+    "https://learn.microsoft.com/en-us/windows/win32/winmsg/window-features",
+    "https://api.avolites.com/19.0/",
+    "https://help.malighting.com/grandMA3/2.4/HTML/lua_objectfree_messagebox.html"
+  ]
+}

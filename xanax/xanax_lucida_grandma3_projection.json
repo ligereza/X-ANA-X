@@ -1,0 +1,114 @@
+{
+  "schema": "xanax:lucida:lighting-surface:0.1",
+  "kind": "visual_analogy_projection",
+  "host_id": "LUCIDA",
+  "surface_id": "GRANDMA3",
+  "status": "pending_approval",
+  "directions": ["TITAN_TO_GRANDMA3", "GRANDMA3_TO_TITAN"],
+  "semantic_route": "source_interface -> canonical_intent -> target_interface",
+  "direct_coordinate_inverse": false,
+  "learning_shortcut": {
+    "key": "CTRL+ALT+L",
+    "name": "LUCIDA_PEEK",
+    "modes": ["COMPOSED_SURFACE", "REAL_SURFACE", "HOST_NATIVE"]
+  },
+  "outline_legend": {
+    "cyan": "direct_verified",
+    "yellow": "partial_or_multistep",
+    "violet": "structural_difference",
+    "red": "unknown_or_blocked",
+    "green": "result_confirmed"
+  },
+  "projection": {
+    "operation": "crop_relocate_relabel",
+    "visual_output": "single_surface",
+    "source_pixels": "grandMA3_only",
+    "layout_template": "Avolites_Titan_workspace_logic",
+    "changes_host_code": false,
+    "creates_plugin": false,
+    "injects_input": false,
+    "writes_showfile": false,
+    "network_access": false,
+    "reversible": true,
+    "observation_status": "web_reference_only"
+  },
+  "source": {
+    "software": "Avolites Titan",
+    "operator_familiarity": "known",
+    "documentation": [
+      "https://manual.avolites.com/docs/next/titan-basics/workspace-windows/",
+      "https://manual.avosupport.de/docs/about-the-consoles/t3/"
+    ]
+  },
+  "target": {
+    "software": "grandMA3 onPC",
+    "manual_version": "2.4",
+    "documentation": [
+      "https://help.malighting.com/grandMA3/2.3/HTML/qsg_first_view.html",
+      "https://help.malighting.com/grandMA3/2.3/HTML/cue_sequence_sheet.html",
+      "https://help.malighting.com/grandMA3/2.0/HTML/cue_playback.html"
+    ]
+  },
+  "xanax_analogies": [
+    {
+      "task_id": "fixture_selection",
+      "source_term": "Groups and fixture selection",
+      "target_term": "Fixture Sheet and user-defined area",
+      "relation": "select the set before changing attributes",
+      "status": "partial",
+      "break_signal": "target selection behavior differs or is not visible"
+    },
+    {
+      "task_id": "attribute_control",
+      "source_term": "Attribute Control and wheels",
+      "target_term": "Encoder Bar",
+      "relation": "edit the selected fixture attributes",
+      "status": "partial",
+      "break_signal": "attribute layer or encoder context is not evidenced"
+    },
+    {
+      "task_id": "reusable_value",
+      "source_term": "Colours, Positions, Gobos and Beams",
+      "target_term": "Pools and preset objects",
+      "relation": "reuse a stored value instead of rebuilding it",
+      "status": "partial",
+      "break_signal": "stored object type cannot be confirmed"
+    },
+    {
+      "task_id": "cue_sequence",
+      "source_term": "Cue or playback view",
+      "target_term": "Sequence Sheet",
+      "relation": "read the ordered cue timeline and its values",
+      "status": "partial",
+      "break_signal": "sequence, cue or tracking meaning is not visible"
+    },
+    {
+      "task_id": "playback_control",
+      "source_term": "Playback faders and buttons",
+      "target_term": "Playback Control and Executors",
+      "relation": "identify the surface used to run a stored sequence",
+      "status": "partial",
+      "break_signal": "the visual region does not prove playback ownership"
+    }
+  ],
+  "target_regions_normalized": [
+    {"task_id": "fixture_selection", "x": 0.12, "y": 0.16, "width": 0.38, "height": 0.45},
+    {"task_id": "attribute_control", "x": 0.12, "y": 0.78, "width": 0.38, "height": 0.14},
+    {"task_id": "reusable_value", "x": 0.52, "y": 0.16, "width": 0.20, "height": 0.28},
+    {"task_id": "cue_sequence", "x": 0.52, "y": 0.48, "width": 0.36, "height": 0.30},
+    {"task_id": "playback_control", "x": 0.78, "y": 0.16, "width": 0.16, "height": 0.28}
+  ],
+  "tests": {
+    "static_contract": "required",
+    "normalized_rect_round_trip": "required",
+    "overlap_kill_test": "required",
+    "real_ui_capture": "next_evidence",
+    "execution": "blocked"
+  },
+  "evidence": {
+    "fixture_origin": "C:/IA/FARMAXIA/experiments/083-farmaxia-lighting-surface-contract",
+    "real_titan_capture": false,
+    "real_grandma3_capture": false,
+    "web_references_are_semantic_only": true
+  }
+}

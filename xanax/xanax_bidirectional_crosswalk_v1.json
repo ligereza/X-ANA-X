@@ -1,0 +1,520 @@
+{
+  "schema": "xanax.canonical_crosswalk.v1",
+  "status": "documentary_baseline_not_live_calibrated",
+  "principle": "Translate operator intent, object, context and state; never invert screen coordinates directly.",
+  "mission_engine": {
+    "schema": "matrix.mission_engine.v1",
+    "learning_unit": "mission_case",
+    "software_role": "A_and_B_are_surface_adapters_not_the_curriculum",
+    "function": "f(mission, context, source_surface) -> target_action_set",
+    "target_action_set": ["preconditions", "visual_projection", "gesture_sequence", "expected_feedback", "loss"],
+    "relation_set": ["common", "reordered", "renamed", "split", "merged", "composed", "context_shift", "A_only", "B_only", "lossy", "unknown"],
+    "set_model": {
+      "common": "A_intersection_B",
+      "a_only": "A_minus_B",
+      "b_only": "B_minus_A",
+      "reordered": "same_mission_different_surface_order",
+      "split": "one_source_action_to_many_target_actions",
+      "merged": "many_source_actions_to_one_target_action",
+      "composed": "target_result_reconstructed_from_primitives",
+      "context_shift": "same_gesture_different_meaning_under_context",
+      "lossy": "target_or_return_cannot_preserve_all_state"
+    },
+    "case_record": [
+      "mission",
+      "abstract_primitive",
+      "source_evidence",
+      "target_evidence",
+      "relation",
+      "preconditions",
+      "source_gesture",
+      "target_gesture_sequence",
+      "observed_feedback",
+      "loss",
+      "reversibility",
+      "evidence_level"
+    ],
+    "geometric_rule": "Geometry_is_projection_only; semantics_are_resolved_before_coordinates",
+    "input_rule": "source_gesture -> mission -> target_gesture_sequence; never source_coordinate -> target_coordinate_without_mission",
+    "reordered_example": {
+      "mission": "activate_function_1",
+      "relation": "reordered",
+      "source_slots": {"function_1": "slot_left", "function_2": "slot_right"},
+      "target_slots": {"function_1": "slot_right", "function_2": "slot_left"},
+      "visual_transform": "permute_slots(function_1, function_2)",
+      "input_transform": "click(slot_left) -> click(target_slot_right)",
+      "verification": "target_feedback_matches_function_1",
+      "failure_rule": "if_target_feedback_is_absent_or_wrong_block_and_mark_loss"
+    },
+    "matrix_training_rule": "MATRIX_learns_relations_between_mission_cases_not_complete_host_manuals"
+  },
+  "route_priority": [
+    {
+      "priority": 1,
+      "route": "native_semantic_api_or_command",
+      "titan": "Titan Web API HTTP/JSON where the required provider/script is exposed",
+      "grandma3": "Command Line, OSC and Lua plugin/object API where enabled"
+    },
+    {
+      "priority": 2,
+      "route": "native_remote_protocol",
+      "titan": "Titan Remote/TitanNet or documented remote path",
+      "grandma3": "Web Remote, MIDI/DMX/OSC remote inputs and Sessions"
+    },
+    {
+      "priority": 3,
+      "route": "accessibility_or_semantic_ui",
+      "titan": "Only after inspection of the concrete Windows surface",
+      "grandma3": "Only after inspection of the concrete Windows surface"
+    },
+    {
+      "priority": 4,
+      "route": "calibrated_surface_input",
+      "titan": "Fallback only",
+      "grandma3": "Fallback only"
+    }
+  ],
+  "capability_gate": {
+    "principle": "A visible software control is not proof that the concrete installation can safely edit or emit output.",
+    "states": [
+      "software_installed",
+      "semantic_editing",
+      "parameter_unlock",
+      "dmx_output",
+      "visualizer_access",
+      "remote_input",
+      "session_state"
+    ],
+    "titan_checks": [
+      "titan_version",
+      "avokey_or_compatible_hardware",
+      "titan_go_or_simulator_mode",
+      "dmx_line_and_processing_limit",
+      "midi_or_smpte_availability",
+      "web_api_version_and_port",
+      "network_interface_and_firewall"
+    ],
+    "grandma3_checks": [
+      "grandma3_version",
+      "onpc_unlock_hardware",
+      "available_parameter_count",
+      "dmx_key_or_viz_key_or_processing_unit",
+      "session_master_and_streaming_version",
+      "dmx_protocol_configuration",
+      "remote_interface_and_permissions"
+    ],
+    "promotion_rule": "Learning may remain valid at semantic_editing while dmx_output is closed; live execution requires the target gate to be observed open in an isolated reversible show."
+  },
+  "show_schema": {
+    "principle": "Project/show data is not a generic folder and cannot be assumed symmetric across hosts.",
+    "titan_observed": {
+      "container": "ZIP-like .d4z",
+      "readable_entries": ["Show.xml", "CaptureShow.c2p", "Fixtures/*.xml", "DMX/PixelMapper partitions"],
+      "schema_signals": ["software_version", "file_version", "desk", "version_history", "show_settings", "entity_pools", "dmx_lines", "dmx_modules"],
+      "native_routes": ["D4Z_read_only_copy", "Titan_Web_API", "Titan_Capture_link"]
+    },
+    "grandma3_observed": {
+      "container": "binary .show with GMA3 signature",
+      "readable_entries": [],
+      "schema_signals": ["requires_host_native_or_official_export_route"],
+      "native_routes": ["Show_Creator_Export_with_Dependencies", "Partial_Show_Read_on_isolated_copy", "MVR_GDTF_exchange", "Lua_plugin_object_API", "Command_Line"]
+    },
+    "learning_order": ["container", "version", "object_schema", "dependency_graph", "semantic_operation", "surface_projection"],
+    "provenance_rule": "Keep host version, show version and extraction route in every learned observation."
+  },
+  "surface_input_policy": {
+    "semantic_first": ["Invoke", "RangeValue", "Selection", "Grid", "Transform", "SynchronizedInput", "host_native_route"],
+    "fallback": "SendInput_or_calibrated_mouse_keyboard",
+    "constraints": ["interactive_desktop", "foreground_target", "focus_verified", "UIPI_integrity_level", "window_identity", "observed_result"],
+    "prohibition": "A visual overlay alone does not move the host click and blind coordinates are not an equivalence proof."
+  },
+  "hosts": {
+    "titan": {
+      "name": "Avolites Titan",
+      "documentation": "https://manual.avolites.com/"
+    },
+    "grandma3": {
+      "name": "MA Lighting grandMA3",
+      "documentation": "https://help.malighting.com/grandMA3/2.4/HTML/"
+    }
+  },
+  "observed_local_installation": {
+    "status": "inventory_only_not_capability_validation",
+    "titan": {
+      "file_version": "19.1.205.5",
+      "components": ["Titan", "Titan Go", "Titan Simulator", "WebAPI"],
+      "source_paths": [
+        "C:\\Program Files\\Avolites\\Titan",
+        "C:\\Program Files\\Avolites\\Titan Go",
+        "C:\\Program Files\\Avolites\\Titan Simulator",
+        "C:\\Program Files\\Avolites\\WebAPI"
+      ]
+    },
+    "grandma3": {
+      "file_version": "2.4.2.2",
+      "additional_data_version": "2.3.1",
+      "source_paths": [
+        "C:\\Program Files\\MALightingTechnology\\gma3_2.4.2",
+        "C:\\ProgramData\\MALightingTechnology\\gma3_2.3.1"
+      ]
+    },
+    "known_unknowns": [
+      "AvoKey_or_compatible_hardware",
+      "DMX-key_or_viz-key_or_processing_unit",
+      "parameter_unlock_count",
+      "session_master",
+      "network_interface",
+      "remote_permissions",
+      "dmx_output_state"
+    ],
+    "runtime_observation": {
+      "services": {
+        "Avolites ACN Gateway": "Stopped",
+        "Avolites CITP 19.1": "Stopped",
+        "Avolites Expert Usb": "Stopped",
+        "Avolites WebAPI 19.1": "Stopped"
+      },
+      "matching_process_observed": false,
+      "listeners_observed": [],
+      "checked_tcp_ports": [4430, 4431, 30000],
+      "interpretation": "No runtime probe has been performed; start nothing automatically."
+    }
+  },
+  "operations": [
+    {
+      "id": "show_schema_export",
+      "canonical_intent": "inspect_or_export_show_objects_without_rewriting_source",
+      "titan_route": {
+        "objects": ["show_xml", "fixture_partition", "dmx_line", "entity_pool", "capture_show"],
+        "surface": "Read-only D4Z copy, Show.xml index, Titan Web API or Capture-linked state",
+        "semantic_state": ["software_version", "file_version", "desk", "version_history", "object_type", "dependency_graph"]
+      },
+      "grandma3_route": {
+        "objects": ["data_pool", "group", "layout", "macro", "plugin", "preset", "sequence", "timecode", "world", "mvr", "gdtf"],
+        "surface": "Show Creator Export, command line, Lua object API, PSR/MVR/GDTF on an isolated copy",
+        "semantic_state": ["show_version", "data_pool", "object_type", "dependencies", "export_format", "psr_side_effects"]
+      },
+      "mapping_status": "host_native_schema_extraction",
+      "loss_or_risk": "Titan exposes a readable container structure, while grandMA3 export is object- and dependency-scoped; PSR/import can clear Programmer or merge data and must not be treated as passive reading.",
+      "visual_rule": "Show extraction route, show version, object type, dependencies and side effects in peek.",
+      "input_rule": "Read-only indexing first; export before import; never parse or rewrite proprietary show binaries by assumption.",
+      "evidence": [
+        "https://help.malighting.com/grandMA3/2.4/HTML/import-export.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/sc_psr.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/show-creator.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/rn_features-2-4.html"
+      ]
+    },
+    {
+      "id": "selection",
+      "canonical_intent": "select_fixture_set",
+      "titan_route": {
+        "objects": ["fixture", "fixture_group"],
+        "surface": "Fixture/Group windows, keypad or executor/macro control",
+        "semantic_state": ["selection_order", "group_layout"]
+      },
+      "grandma3_route": {
+        "objects": ["fixture", "group", "subfixture"],
+        "surface": "Fixture Sheet, Group Pool, command line or Preset Pool",
+        "semantic_state": ["selection_order", "grid_position", "parent_child_path"]
+      },
+      "mapping_status": "near_compatible_with_hierarchy_warning",
+      "native_route": {
+        "titan": "Titan Web API Programmer.OnOff.Selection.SetNewHandleSelection using user-number or handle-list identifiers.",
+        "grandma3": "Official OSC command route: send /cmd with OSC type s and command-line text Fixture <id> + Fixture <id>; Receive Command must be enabled on the target."
+      },
+      "loss_or_risk": "A Titan group click cannot be assumed to select the same granularity as a grandMA3 parent fixture or subfixture.",
+      "visual_rule": "Show the familiar source position, but outline the actual target object and hierarchy level.",
+      "input_rule": "Route only after the target object and hierarchy level are known; do not send a blind coordinate click.",
+      "evidence": [
+        "https://manual.avolites.com/docs/14.0/controlling-fixtures/fixture-groups/",
+        "https://help.malighting.com/grandMA3/2.3/HTML/group.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/operate_select_fixtures.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/csk_parent_child.html"
+      ]
+    },
+    {
+      "id": "attribute_edit",
+      "canonical_intent": "edit_fixture_attribute",
+      "titan_route": {
+        "objects": ["attribute_bank", "wheel", "attribute_editor"],
+        "surface": "IPCGBESFX bank and wheels or Attribute Editor",
+        "semantic_state": ["programmer_value", "attribute_bank", "wheel_assignment"]
+      },
+      "grandma3_route": {
+        "objects": ["feature_group", "encoder_page", "encoder_layer", "encoder"],
+        "surface": "Encoder Bar, context-sensitive encoder toolbar or Fixture Sheet",
+        "semantic_state": ["active_page", "active_layer", "feature_group", "programmer_value"]
+      },
+      "mapping_status": "contextual_not_coordinate_equivalent",
+      "native_route": {
+        "titan": "Titan Web API includes Programmer.Editor.Fixtures.SetControlValueByName for currently selected fixtures; it can place the value in the Programmer.",
+        "grandma3": "Official OSC command route: send /cmd with OSC type s and command-line text Attribute \"<attribute>\" At <value>; Receive Command must be enabled on the target."
+      },
+      "loss_or_risk": "The same apparent position can address pan, color, beam or a timing control depending on bank/page/layer context.",
+      "visual_rule": "Use the source visual grammar and a colored outline for the destination encoder context; show the active bank/page in peek.",
+      "input_rule": "Set or verify context before the value gesture. Mouse remapping alone is insufficient.",
+      "evidence": [
+        "https://manual.avolites.com/docs/next/controlling-fixtures/changing-fixture-attributes/",
+        "https://help.malighting.com/grandMA3/2.3/HTML/qsg_first_view.html",
+        "https://help.malighting.com/grandMA3/2.3/HTML/ws_encoder_bar.html",
+        "https://help.malighting.com/grandMA3/2.3/HTML/ws_eb_encoder_toolbar.html"
+      ]
+    },
+    {
+      "id": "reusable_value",
+      "canonical_intent": "recall_reusable_attribute_values",
+      "titan_route": {
+        "objects": ["palette", "palette_family"],
+        "surface": "Colours, Gobos, Positions windows or macro/executor",
+        "semantic_state": ["palette_reference", "fixture_compatibility"]
+      },
+      "grandma3_route": {
+        "objects": ["preset", "feature_group_pool", "recipe"],
+        "surface": "Preset Pool and recipe editor",
+        "semantic_state": ["preset_mode", "feature_group", "recipe_sources", "programmer_value"]
+      },
+      "mapping_status": "partial_with_explicit_loss",
+      "native_route": {
+        "titan": "Titan Web API Palette.ApplyPalette with handle_userNumber or handle_titanId and usePaletteTimes; palette handle identity must be resolved first.",
+        "grandma3": "Official command-line route: select fixtures, then send /cmd with OSC type s and command-line text At Preset <feature_group>.<preset>; preset mode and fixture compatibility must be verified."
+      },
+      "loss_or_risk": "A Titan palette maps conceptually to a preset, but Selective/Global/Universal modes and recipes may not have a one-click Titan equivalent.",
+      "visual_rule": "Mark whether the destination is a direct preset value, a recipe, or a lossy approximation.",
+      "input_rule": "Require a confirmation/peek when conversion changes scope or source priority.",
+      "evidence": [
+        "https://manual.avolites.com/docs/next/palettes/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/presets.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/presets_pools.html",
+        "https://help.malighting.com/grandMA3/2.3/HTML/recipes.html"
+      ]
+    },
+    {
+      "id": "cue_sequence",
+      "canonical_intent": "store_or_edit_time_ordered_look",
+      "titan_route": {
+        "objects": ["cue", "cue_list"],
+        "surface": "Cue List window and connected playback",
+        "semantic_state": ["cue_number", "timing", "tracking", "go_mode"]
+      },
+      "grandma3_route": {
+        "objects": ["sequence", "cue", "cue_part", "recipe"],
+        "surface": "Sequence Pool and Sequence Sheet",
+        "semantic_state": ["cue_number", "cue_part", "layer", "timing", "recipe_sources"]
+      },
+      "mapping_status": "structural_translation_required",
+      "native_route": {
+        "grandma3": "Official command-line route: send /cmd with OSC type s and Store Sequence <sequence> Cue <cue> [/Overwrite]; cue parts, recipes and timing require explicit arguments."
+      },
+      "loss_or_risk": "A Titan cue list and a grandMA3 sequence may look like a stack, but grandMA3 exposes cue parts, layers and recipes as additional structure.",
+      "visual_rule": "Use a graph/stack representation that reveals hidden cue parts instead of pretending one row equals one row.",
+      "input_rule": "Do not translate a click until the selected sequence/cue/part is identified.",
+      "evidence": [
+        "https://manual.avolites.com/docs/next/cue-lists/",
+        "https://help.malighting.com/grandMA3/2.3/HTML/cue_sequence_sheet.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/qsg_cue_executor.html",
+        "https://help.malighting.com/grandMA3/2.3/HTML/recipes.html"
+      ]
+    },
+    {
+      "id": "playback_control",
+      "canonical_intent": "trigger_or_adjust_live_playback",
+      "titan_route": {
+        "objects": ["playback", "fader", "go_button"],
+        "surface": "Playback window, fader, virtual fader or executor/macro button",
+        "semantic_state": ["fader_level", "go", "flash", "tracking"]
+      },
+      "grandma3_route": {
+        "objects": ["executor", "sequence", "executor_handle", "fader"],
+        "surface": "Executor/Playback Window or onPC executor controls",
+        "semantic_state": ["executor_function", "controlled_sequence", "fader_level", "go", "off_cue"]
+      },
+      "mapping_status": "not_direct_inverse",
+      "native_route": {
+        "titan": "Titan Web API exposes playback fire/level/kill scripts; exact endpoint must be probed read-only first.",
+        "grandma3": "OSC can address command-line playback commands; plugins can expose object-aware actions."
+      },
+      "loss_or_risk": "Titan presents the stored cue list through a playback; grandMA3 Executor is a handle that sends control commands to a sequence in the pool. The visible control does not own the same data.",
+      "visual_rule": "Show both the familiar control and the real sequence/executor ownership in peek.",
+      "input_rule": "Resolve executor function and controlled sequence before Go, fader or flash input.",
+      "evidence": [
+        "https://manual.avolites.com/docs/cues/",
+        "https://manual.avolites.com/docs/cues/cue-playback/",
+        "https://help.malighting.com/grandMA3/2.3/HTML/executor.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/qsg_cue_executor.html"
+      ]
+    },
+    {
+      "id": "selection_transform",
+      "canonical_intent": "transform_ordered_fixture_selection",
+      "titan_route": {
+        "objects": ["fan", "align", "selection_order", "group_layout"],
+        "surface": "Fan or Align functions with attribute wheels",
+        "semantic_state": ["selection_order", "source_fixture", "attribute_mask", "programmer_values"]
+      },
+      "grandma3_route": {
+        "objects": ["matricks", "selection_grid", "align", "wings", "blocks", "shuffle", "transform"],
+        "surface": "MAtricks window, Selection Grid, Align Bar or Encoder Bar",
+        "semantic_state": ["grid_axes", "blocks", "groups", "wings", "width", "layers", "phase", "invert", "transform"]
+      },
+      "mapping_status": "related_intent_different_state_model",
+      "loss_or_risk": "A Titan Fan can look like a simple MAtricks result, but grandMA3 can retain grid, wings, layers, shuffle and transform state that Titan does not expose in the same object.",
+      "visual_rule": "Outline the selection transform context, not just the wheel or button; show grid/order and active attribute mask in peek.",
+      "input_rule": "Resolve selection model and environment before applying a transform. Never map Fan to a generic encoder click.",
+      "evidence": [
+        "https://manual.avolites.com/docs/13.0/controlling-fixtures/using-the-select-buttons-and-wheels/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/matricks.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/operate_selection.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/operate_align.html"
+      ]
+    },
+    {
+      "id": "programming_environment",
+      "canonical_intent": "edit_without_or_with_live_output",
+      "titan_route": {
+        "objects": ["programmer", "blind_state", "live_output", "cue_list"],
+        "surface": "Blind mode, Programmer, cue list and Visualiser",
+        "semantic_state": ["blind", "programmer_values", "tracking", "stage_output"]
+      },
+      "grandma3_route": {
+        "objects": ["preview_pool", "programmer", "sequence", "cue", "track_sheet", "content_sheet"],
+        "surface": "Preview environment, Sequence Sheet, Track Sheet, Content Sheet and Output/DMX views",
+        "semantic_state": ["preview", "user_profile", "tracking_distance", "cue_only", "break", "live_output"]
+      },
+      "mapping_status": "same_safety_intent_different_side_effects",
+      "loss_or_risk": "Preview/Blind state can protect output, but storing or updating can still affect live data depending on the host and operation.",
+      "visual_rule": "Use a distinct environment indicator; peek must not be confused with Blind or Preview.",
+      "input_rule": "Require an explicit environment state before store/update/record actions; default to read-only.",
+      "evidence": [
+        "https://manual.avolites.com/docs/13.0/cues/creating-a-cue/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/preview.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/cue_sequence_sheet.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/cue_tracking_distance.html"
+      ]
+    },
+    {
+      "id": "show_data_propagation",
+      "canonical_intent": "propagate_fixture_data_through_show",
+      "titan_route": {
+        "objects": ["fixture_personality", "patch", "capture_stage", "fixture_position"],
+        "surface": "Patch, Capture Visualiser and linked Capture show",
+        "semantic_state": ["fixture_identity", "dmx_address", "position", "orientation", "legend"]
+      },
+      "grandma3_route": {
+        "objects": ["clone", "multipatch", "mvr", "subfixture", "layout", "sequence", "preset", "world"],
+        "surface": "Patch menu, Clone, Layout, MVR and 3D/fixture hierarchy",
+        "semantic_state": ["source", "destination", "dependencies", "priority", "parent_child", "show_objects"]
+      },
+      "mapping_status": "high_risk_non_equivalent",
+      "loss_or_risk": "A visual replacement can propagate through many show objects; blindly translating it could rewrite the project rather than operate it.",
+      "visual_rule": "Mark propagation scope and dependencies; keep this class read-only during learning.",
+      "input_rule": "No live write route until a user-approved, reversible clone/patch test exists.",
+      "evidence": [
+        "https://help.malighting.com/grandMA3/2.4/HTML/operate_clone.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/patch.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/ok_mvr.html",
+        "https://manual.avolites.com/docs/capture-visualiser/capture-show-files/",
+        "https://manual.avolites.com/docs/15.1/capture-visualiser/linking-the-console-to-stand-alone-capture/"
+      ]
+    },
+    {
+      "id": "playback_safety",
+      "canonical_intent": "stop_or_release_active_output",
+      "titan_route": {
+        "objects": ["kill", "release", "release_mask", "playback"],
+        "surface": "Playback controls, Release menu and Playback Groups",
+        "semantic_state": ["kill_action", "release_mask", "release_time", "ltp_residue"]
+      },
+      "grandma3_route": {
+        "objects": ["running_playback", "off_menu", "sequence", "macro", "timecode", "generator"],
+        "surface": "Running Playbacks window or Off Menu",
+        "semantic_state": ["object_type", "started_by", "off_mode", "active_output"]
+      },
+      "mapping_status": "safety_critical_partial",
+      "native_route": {
+        "titan": "Titan Web API exposes KillPlayback and KillAllPlaybacks; release-mask semantics still require host-state verification.",
+        "grandma3": "Running Playbacks/Off Menu are documented UI routes; OSC/command-line can address object playback controls."
+      },
+      "loss_or_risk": "Kill, Off, Release and Fade-to-zero can produce different residual output and future playback behavior.",
+      "visual_rule": "Use different colors and labels for kill, off, release and fade; show the affected object and source.",
+      "input_rule": "Require confirmation for release-all/everything-off and keep an immediate rollback/peek path.",
+      "evidence": [
+        "https://manual.avolites.com/docs/cues/cue-playback/",
+        "https://manual.avolites.com/docs/13.0/cues/playback-groups/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/executor_running_playbacks.html"
+      ]
+    },
+    {
+      "id": "media_control",
+      "canonical_intent": "control_media_content_or_surface",
+      "titan_route": {
+        "objects": ["synergy_surface", "synergy_layer", "citp_media_fixture", "media_clip"],
+        "surface": "Synergy Fixtures, Media Browser, Attribute Editor or linked media server",
+        "semantic_state": ["server", "surface", "layer", "clip", "media_master", "network_link"]
+      },
+      "grandma3_route": {
+        "objects": ["image", "video", "sound", "bitmap", "ndi_source", "data_pool"],
+        "surface": "Media Pools, Bitmap, Appearance, Sound, Video and Data Pool windows",
+        "semantic_state": ["data_pool", "source", "appearance", "bitmap_mapping", "master", "network_source"]
+      },
+      "mapping_status": "separate_subsystem_partial",
+      "loss_or_risk": "A media surface or bitmap can look like a lighting fixture but has different ownership, timing, network and master behavior.",
+      "visual_rule": "Use a distinct media color family and show server/pool/layer identity in peek.",
+      "input_rule": "Resolve subsystem and data pool before operating; do not send a lighting fixture command to a media object.",
+      "evidence": [
+        "https://manual.avolites.com/docs/synergy/",
+        "https://manual.avolites.com/docs/16.0/networking/using-active-fixtures/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/videos.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/bitmap.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/datapool.html"
+      ]
+    },
+    {
+      "id": "transport_control",
+      "canonical_intent": "carry_or_trigger_semantic_operation",
+      "titan_route": {
+        "objects": ["titan_api", "titan_remote", "titannet", "dmx_line", "artnet", "sacn", "midi", "smpte"],
+        "surface": "Titan Web API, Titan Remote, TitanNet, DMX Settings, MIDI/SMPTE and network interfaces",
+        "semantic_state": ["api_version", "host", "port", "interface", "line", "universe", "sacn_priority", "user", "session"]
+      },
+      "grandma3_route": {
+        "objects": ["command_line", "osc", "web_remote", "midi", "msc", "dmx_remote", "psn", "artnet", "sacn", "session"],
+        "surface": "Command Line, OSC, Web Remote, In & Out, DMX Protocols and Session controls",
+        "semantic_state": ["interface", "port", "remote_target", "midi_mode", "dmx_input_priority", "session", "data_pool", "user"]
+      },
+      "mapping_status": "transport_separate_from_semantics",
+      "transport_kinds": ["event_trigger", "continuous_control", "spatial_tracking", "output_source"],
+      "loss_or_risk": "The same transport event can trigger a command without owning output priority; network inputs and remote routes can affect live state unexpectedly.",
+      "visual_rule": "Show the familiar source control while revealing the actual transport, host, interface and semantic target in peek.",
+      "input_rule": "Prefer object-aware native routes; require an armed, reversible probe before sending writes through any transport.",
+      "evidence": [
+        "https://api.avolites.com/19.2/",
+        "https://manual.avolites.com/docs/quick-start/dmx-network-setup/",
+        "https://manual.avolites.com/docs/remote-control/",
+        "https://help.malighting.com/grandMA3/2.4/HTML/dmx_ethernet.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/dmx_priorities.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/remote_inputs.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/remote_inputs_dmx.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/remote_inputs_psn.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/remote_inputs_midi.html",
+        "https://help.malighting.com/grandMA3/2.4/HTML/remote_inputs_msc.html"
+      ]
+    }
+  ],
+  "implementation_order": [
+    "capture_and_identify_real_windows",
+    "show_schema_export",
+    "selection",
+    "attribute_edit",
+    "selection_transform",
+    "programming_environment",
+    "reusable_value",
+    "cue_sequence",
+    "playback_control",
+    "playback_safety",
+    "show_data_propagation",
+    "media_control",
+    "transport_control"
+  ],
+  "current_blocker": "No live semantic calibration has been performed on the actual Titan and grandMA3 windows; the local 083 contract is not that evidence."
+}
