@@ -1,31 +1,31 @@
 # X-ANA-X
 
-Repositorio base del motor que transforma una misión de usuario entre
+Repositorio base de un motor que transforma una misión de usuario entre
 superficies de software.
 
-```text
-misión → estado canónico → firma/relación → propuesta → verificador
-```
+Flujo común:
 
-El núcleo común contiene XANAX/MATRIX: operaciones canónicas, trayectorias,
-firmas de live show, composición de capacidades y aprendizaje a partir de
-casos verificados. Las superficies concretas se separan en tres ramas de
-trabajo:
+misión -> estado canónico -> relación -> propuesta -> verificador
 
-- `PUPILA`: ayuda directa dentro de una interfaz y analogía visual entre una
-  interfaz conocida y otra por aprender. Integra VIZZ como motor visual.
-- `FARMAKSIA`: estudio investigativo de neurociencia, teoría del color,
+El núcleo compartido vive en core/. Contiene operaciones canónicas,
+trayectorias, firmas de live show, composición de capacidades y aprendizaje
+basado en casos verificados.
+
+Las tres ramas de trabajo son:
+
+- PUPILA: asistencia directa dentro de una interfaz y transferencia
+  analógica desde una interfaz conocida hacia otra por aprender.
+  PUPILA/visual contiene medición geométrica y funciones perceptuales.
+- FARMAKSIA: estudio investigativo de neurociencia, teoría del color,
   pantallas, percepción y evaluación.
-- `LUCIDA`: integración transparente con aplicaciones. Sus áreas son Adobe,
-  Resolume y Multi; el material específico de MOSAIK vive bajo Resolume.
+- LUCIDA: integración transparente con aplicaciones. Sus superficies son
+  Adobe, Resolume y Multi. El adaptador específico de Resolume vive en
+  LUCIDA/resolume/adapter.
 
-VIZZ aporta funciones gráficas y perceptuales. PUPILA interpreta la necesidad
-de ayuda. X-ANA-X opera la transferencia entre gramáticas. LUCIDA coloca la
-ayuda sobre el escritorio o la aplicación. El adaptador de Resolume evita
-duplicar una composición completa y conserva el presupuesto gráfico del host.
+PUPILA decide qué ayuda necesita la persona. El núcleo común convierte esa
+intención en una propuesta comprobable. LUCIDA la presenta o la conecta con
+la aplicación anfitriona sin asumir control físico. FARMAKSIA aporta
+hipótesis y evidencia; no convierte una hipótesis en una afirmación.
 
-Los repositorios originales pueden conservar sus publicaciones mientras este
-repositorio reúne la integración. XIO queda como futura fuente móvil y de
-trabajo multiusuario para `LUCIDA/Multi`; no forma parte del runtime local de
-esta primera integración.
-
+XIO queda como futura fuente móvil y multiusuario para LUCIDA/Multi. No forma
+parte del runtime local de esta primera integración.
