@@ -11,8 +11,86 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 PYTHON = sys.executable
 
+OUT_OF_SCOPE_EXPERIMENTS = frozenset(
+    {
+        "084-vizz-distance-scale-experiment",
+        "085-vizz-blender-focus-distance",
+        "086-vizz-blender-live-distance-bridge",
+        "087-vizz-touchdesigner-state-renderer",
+        "088-vizz-state-replay-preflight",
+        "089-vizz-dual-sensor-closed-calibration",
+    }
+)
 
-def command(label: str, args: list[str], expected: str | None = None) -> None:
+SKIPPED: set[str] = set()
+
+
+def target_state(args: list[str]) -> tuple[str, str | None]:
+    """Say whether a step's targets are present, declared absent, or missing.
+
+    Steps for the out-of-scope experiments stay written down, because their
+    decisions and literature are published here even though their code is not.
+    Present and absent-but-undeclared are kept as separate answers on purpose:
+    one value for both would make an experiment deleted by accident look
+    exactly like an experiment nobody ever referenced.
+
+    Only arguments that carry a path separator are treated as targets. Flags
+    and bare words -- `-m`, `-q`, `compileall`, `--dry-run` -- are arguments to
+    a step, not files it needs, and reading them as absent targets stops the
+    suite on its first line.
+    """
+
+    for argument in args[1:]:
+        if "/" not in argument:
+            continue
+        path = Path(argument)
+        if not path.is_absolute():
+            path = ROOT / path
+        if path.exists():
+            continue
+        for part in path.parts:
+            if part in OUT_OF_SCOPE_EXPERIMENTS:
+                return "declared_absent", part
+        return "missing", argument
+    return "present", None
+
+
+def unlisted_provenance(listed: list[str]) -> list[str]:
+    """Name manifests present on disk that the suite does not validate by index.
+
+    The list below is positional, so a manifest can exist and simply never be
+    reached: experiment 042 sat valid and unwatched that way. These are checked
+    without duplicating the listed ones, so an experiment kept outside the
+    suite still cannot let its provenance rot unnoticed.
+    """
+
+    on_disk = {
+        str(path.relative_to(ROOT)) for path in (ROOT / "experiments").glob("*/provenance.json")
+    }
+    return sorted(on_disk - set(listed))
+
+
+def command(
+    label: str,
+    args: list[str],
+    expected: str | None = None,
+    *,
+    required_platform: str | None = None,
+) -> None:
+    if required_platform is not None and sys.platform != required_platform:
+        SKIPPED.add(f"{label} (requires {required_platform})")
+        print(
+            f"SKIP {label}: requires {required_platform}; "
+            f"current platform is {sys.platform}"
+        )
+        return
+    state, target = target_state(args)
+    if state == "declared_absent":
+        SKIPPED.add(target)
+        print(f"SKIP {label}: {target} is not published in this scope")
+        return
+    if state == "missing":
+        raise RuntimeError(f"{label} needs a target that is absent and not declared: {target}")
     completed = subprocess.run(
         args,
         cwd=ROOT,
@@ -125,6 +203,12 @@ def main() -> None:
     ]
 
     command("compile Python", [PYTHON, "-m", "compileall", "-q", "research", "experiments"])
+    for path in unlisted_provenance(provenance):
+        command(
+            f"provenance unlisted {Path(path).parent.name}",
+            python_script("research/tools/validate_provenance.py", path),
+            "PROVENANCE_VALID",
+        )
     command("validate empty corpus manifest", python_script("research/tools/validate_corpus_manifest.py"), "CORPUS_VALID")
     command("audit consolidated lab state", python_script("research/tools/audit_lab_state.py"), "LAB_STATE_VALID")
     command("audit laboratory completion", python_script("research/tools/audit_lab_completion.py"), "LAB_COMPLETION_VALID")
@@ -1255,11 +1339,13 @@ def main() -> None:
         "experiment FARMAKSIA pywinauto UIA adapter 076",
         python_script("experiments/076-farmaxia-pywinauto-uia-adapter/run_experiment.py", "--inspect-controls"),
         '"status": "PYWINAUTO_UIA_PROBE_VERIFIED"',
+        required_platform="win32",
     )
     command(
         "contract test FARMAKSIA pywinauto UIA adapter 076",
         python_script("experiments/076-farmaxia-pywinauto-uia-adapter/run_contract_test.py"),
         "FARMAXIA_076_PYWINAUTO_UIA_CONTRACT_VALID",
+        required_platform="win32",
     )
     command(
         "kill test FARMAKSIA pywinauto UIA adapter 076",
@@ -1271,11 +1357,13 @@ def main() -> None:
         "experiment FARMAKSIA Excel Blender capability inventory 077",
         python_script("experiments/077-farmaxia-excel-blender-capability-inventory/run_experiment.py"),
         '"status": "EXCEL_BLENDER_CAPABILITY_INVENTORY_VERIFIED"',
+        required_platform="win32",
     )
     command(
         "contract test FARMAKSIA Excel Blender capability inventory 077",
         python_script("experiments/077-farmaxia-excel-blender-capability-inventory/run_contract_test.py"),
         "FARMAXIA_077_EXCEL_BLENDER_CAPABILITY_CONTRACT_VALID",
+        required_platform="win32",
     )
     command(
         "kill test FARMAKSIA Excel Blender capability inventory 077",
@@ -1287,11 +1375,13 @@ def main() -> None:
         "experiment FARMAKSIA native Excel Blender transitions 078",
         python_script("experiments/078-farmaxia-native-transition-probe/run_experiment.py"),
         '"status": "NATIVE_TRANSITIONS_VERIFIED"',
+        required_platform="win32",
     )
     command(
         "contract test FARMAKSIA native Excel Blender transitions 078",
         python_script("experiments/078-farmaxia-native-transition-probe/run_contract_test.py"),
         "FARMAXIA_078_NATIVE_TRANSITION_CONTRACT_VALID",
+        required_platform="win32",
     )
     command(
         "kill test FARMAKSIA native Excel Blender transitions 078",
@@ -1303,11 +1393,13 @@ def main() -> None:
         "experiment FARMAKSIA consented input semantic bridge 079",
         python_script("experiments/079-farmaxia-consented-input-semantic-bridge/run_experiment.py", "--duration", "1.0", "--sample-hz", "5"),
         '"status": "CONSENTED_INPUT_OBSERVER_VERIFIED"',
+        required_platform="win32",
     )
     command(
         "contract test FARMAKSIA consented input semantic bridge 079",
         python_script("experiments/079-farmaxia-consented-input-semantic-bridge/run_contract_test.py"),
         "FARMAXIA_079_CONSENTED_INPUT_CONTRACT_VALID",
+        required_platform="win32",
     )
     command(
         "kill test FARMAKSIA consented input semantic bridge 079",
@@ -1319,11 +1411,13 @@ def main() -> None:
         "experiment FARMAKSIA input native delta correlation 080",
         python_script("experiments/080-farmaxia-input-native-delta-correlation/run_experiment.py", "--mode", "scratch"),
         '"status": "INPUT_NATIVE_DELTA_CORRELATION_VERIFIED"',
+        required_platform="win32",
     )
     command(
         "contract test FARMAKSIA input native delta correlation 080",
         python_script("experiments/080-farmaxia-input-native-delta-correlation/run_contract_test.py"),
         "FARMAXIA_080_INPUT_NATIVE_DELTA_CONTRACT_VALID",
+        required_platform="win32",
     )
     command(
         "kill test FARMAKSIA input native delta correlation 080",
@@ -1498,6 +1592,8 @@ def main() -> None:
         raise RuntimeError(f"experiment 006 representation set mismatch: {sorted(names)}")
     print("PASS experiment 006")
     command("provenance 006", python_script("research/tools/validate_provenance.py", provenance[5]), "PROVENANCE_VALID")
+    if SKIPPED:
+        print(f"SUITE_SCOPE_SKIPPED={len(SKIPPED)}: {' '.join(sorted(SKIPPED))}")
     print("SUITE_VALID")
 
 

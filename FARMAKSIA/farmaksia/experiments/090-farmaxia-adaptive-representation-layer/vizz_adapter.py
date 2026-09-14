@@ -64,7 +64,6 @@ class VizzAdapter:
             "surfaceId": context["surfaceId"],
             "participantRef": participant_ref,
             "windowMs": self.window_ms,
-            "latestAtMs": latest_at,
             "signalCoverage": coverage,
             "sampleCount": len(recent),
             "consent": bool(recent),

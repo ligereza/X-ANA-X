@@ -40,9 +40,13 @@
       "id": "farmaxia:xanax-control-target-suite-018",
       "type": "entity",
       "path": "../../research/tools/run_suite.py",
-      "sha256": "D6778F5783B4D78C72B6CF59ACD1243EA74C796872A3A6E0737A5B35476A3FE9",
       "role": "real_repository_target_source",
-      "authority": "human_declared_tool"
+      "authority": "human_declared_tool",
+      "residue": [
+        "the target is the live suite runner and grows with every experiment added to it, so a frozen sha256 here records a version that no longer exists and fails on the next unrelated edit",
+        "integrity of what was actually analyzed is emitted at runtime as target_sha256 in the experiment result, not pinned in this manifest",
+        "drift in the target is caught behaviourally instead: the kill test refuses a target that lost its SUITE_VALID guard and requires that mutating the guard changes the analysis"
+      ]
     },
     {
       "id": "farmaxia:xanax-control-runner-018",

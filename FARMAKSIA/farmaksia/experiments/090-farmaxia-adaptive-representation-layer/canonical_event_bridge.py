@@ -190,10 +190,9 @@ class CanonicalEventBridge:
         context = _context(raw_context, event)
         key = (context["sessionId"], event["peer_id"], context["surfaceId"])
         seen = self._seen.setdefault(key, set())
-        at_ms = int(event["source_timestamp"].timestamp() * 1000)
         if event["event_id"] in seen:
             vizz_state = self._vizz.state(context, event["peer_id"])
-            pupila_state = self._pupila.snapshot(context, now_ms=at_ms)
+            pupila_state = self._pupila.snapshot(context)
             return {
                 "status": "duplicate",
                 "eventId": event["event_id"],
@@ -204,6 +203,7 @@ class CanonicalEventBridge:
             }
 
         kind = _signal_kind(event)
+        at_ms = int(event["source_timestamp"].timestamp() * 1000)
         signal = normalize_signal(
             {
                 "sessionId": context["sessionId"],
