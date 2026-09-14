@@ -49,8 +49,8 @@ public sealed class NativeAdapterTransport
             plan,
             capability,
             permitPhysicalOutput,
-            plan.MatrixDecision,
-            plan.RequireMatrixConsensus);
+            plan.LearningDecision,
+            plan.RequireLearningConsensus);
         if (!gate.Allowed)
         {
             var route = string.Join(";", gate.Reasons);
@@ -82,8 +82,8 @@ public sealed class NativeAdapterTransport
             plan,
             capability,
             permitPhysicalOutput,
-            plan.MatrixDecision,
-            plan.RequireMatrixConsensus);
+            plan.LearningDecision,
+            plan.RequireLearningConsensus);
         if (!gate.Allowed)
         {
             var route = string.Join(";", gate.Reasons);

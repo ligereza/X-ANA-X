@@ -8,7 +8,7 @@ public sealed record MissionRelationPrediction(
     IReadOnlyList<string> EvidenceIds);
 
 /// <summary>
-/// Evidence-only learner for MATRIX. It has no pretrained knowledge and never
+/// Evidence-only learner for LEARNING. It has no pretrained knowledge and never
 /// promotes an inferred relation to an executable route.
 /// </summary>
 public sealed class MissionRelationLearner
