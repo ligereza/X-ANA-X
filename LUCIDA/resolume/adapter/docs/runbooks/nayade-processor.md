@@ -6,7 +6,7 @@ Llegar al soundcheck, registrar qué equipo existe en la cadena y separar lo que
 
 ## Comandos actuales
 
-Desde `C:\IA\VJ`:
+Desde la raíz del checkout LUCIDA/RESOLUME:
 
 ```powershell
 python tools/resolume_adapter_cli.py nayade-processor catalog

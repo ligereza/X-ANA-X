@@ -13,10 +13,11 @@ Included capabilities:
 
 Source provenance:
 
-- source repository: RESOLUME_ADAPTER (`C:\IA\VJ`);
-- source branch: `LUCIDA`;
-- source commits: `e43422d`, `7daa9fb`, `206b844`, `f4e9f21`, `9b3c2b3`, `6ff293d`, `1ee6d1b`;
-- copied files exclude media, presets, models, caches and private runtime data.
+- canonical repository: `ligereza/X-ANA-X`, branch `LUCIDA`;
+- adapter source path: `LUCIDA/resolume/adapter/`;
+- integrated snapshot: `b895fb5`;
+- standalone mirror: `ligereza/LUCIDA`, branch `RESOLUME`, path `resolume/adapter/`.
+- media, presets, caches and private runtime data are excluded from the mirror.
 
 Run from this repository root:
 

@@ -12,12 +12,10 @@ from adapters.vj.adapter import VJAdapterError
 from adapters.vj.semantic_light_field import SemanticLightFieldBridgeError
 
 
-XIO_ROOT = Path(
-    os.environ.get(
-        "FARMAXIA_XIO_WORKTREE",
-        r"C:\IA\FARMAXIA\.private-work\xio-light-field",
-    )
-)
+XIO_ROOT_VALUE = os.environ.get("LUCIDA_XIO_ROOT")
+if not XIO_ROOT_VALUE:
+    pytest.skip("set LUCIDA_XIO_ROOT to an explicit XIO checkout", allow_module_level=True)
+XIO_ROOT = Path(XIO_ROOT_VALUE).expanduser().resolve()
 XIO_SHOWCONTROL = XIO_ROOT / "xio" / "new-plugins" / "showcontrol"
 XIO_FIXTURE = XIO_SHOWCONTROL / "fixtures" / "semantic_light_field_replay.json"
 
