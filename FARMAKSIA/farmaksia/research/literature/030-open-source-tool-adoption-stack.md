@@ -2,7 +2,7 @@
 
 Date: 2026-09-02
 Status: reviewed
-Scope: LUCIDA, RESOLUME, ADOBE, MULTI, XIO, VIZZ, PUPILA and IRIS
+Scope: LUCIDA, RESOLUME, ADOBE, MULTI, XIO, PUPILA Visual, PUPILA and IRIS
 
 ## Question
 
@@ -52,11 +52,11 @@ or the final `verified` decision.
 | CloudEvents | Gives XIO and LUCIDA a known event envelope and interoperability vocabulary | Event envelope only | Apache-2.0 specification/project | **Already adopted conceptually; keep the FARMAKSIA payload contract** |
 | DuckDB | Turns JSONL/session evidence into local SQL analysis without a database server | XIO/FARMAKSIA read-side analytics | MIT | **Adopt for analysis, not as the source log** |
 | JSON Schema / `jsonschema` | Replaces repeated shape checks at cross-repository boundaries | Contract gate and fixtures | MIT | **Use as a schema gate; keep semantic invariants in local code** |
-| scikit-learn | Supplies tested Ridge, split, metrics and validation primitives for VIZZ calibration | Offline calibration and evaluation | BSD-3-Clause | **Adopt offline first; never use as the live GPU tracker** |
-| MediaPipe Face Landmarker | Provides an established local face/eye landmark front end instead of hand-writing landmark extraction | VIZZ feature adapter | Apache-2.0 code; model terms must be checked separately | **Conditional GPU pilot** |
-| ONNX Runtime | Runs a small learned mapper through explicit execution providers | VIZZ model adapter | MIT code; model license is separate | **Conditional GPU pilot** |
-| OpenCV | Supplies camera geometry, calibration and projection routines | VIZZ geometry adapter | Apache-2.0 | **Use where the existing geometry contract needs it** |
-| pywinauto | Reads Windows UI Automation/Win32 context rather than reverse-engineering every desktop surface | PUPILA/VIZZ read-only UI adapter | BSD-3-Clause | **Already present as a bounded adapter** |
+| scikit-learn | Supplies tested Ridge, split, metrics and validation primitives for PUPILA Visual calibration | Offline calibration and evaluation | BSD-3-Clause | **Adopt offline first; never use as the live GPU tracker** |
+| MediaPipe Face Landmarker | Provides an established local face/eye landmark front end instead of hand-writing landmark extraction | PUPILA Visual feature adapter | Apache-2.0 code; model terms must be checked separately | **Conditional GPU pilot** |
+| ONNX Runtime | Runs a small learned mapper through explicit execution providers | PUPILA Visual model adapter | MIT code; model license is separate | **Conditional GPU pilot** |
+| OpenCV | Supplies camera geometry, calibration and projection routines | PUPILA Visual geometry adapter | Apache-2.0 | **Use where the existing geometry contract needs it** |
+| pywinauto | Reads Windows UI Automation/Win32 context rather than reverse-engineering every desktop surface | PUPILA/PUPILA Visual read-only UI adapter | BSD-3-Clause | **Already present as a bounded adapter** |
 | NetworkX | Removes custom path and graph algorithm code for PUPILA relation graphs | PUPILA offline graph analysis | BSD-3-Clause | **Conditional when the graph outgrows local structures** |
 | spaCy | Supplies tokenization, tagging and local NLP pipeline pieces for manuals and tutorials | PUPILA document adapter | MIT code; language models have separate terms | **Conditional; no model download by default** |
 | Yjs | Supplies CRDT merge and offline collaboration primitives for shared documents | IRIS/PUPILA shared editable state | MIT | **Conditional for real concurrent editing, not telemetry** |
@@ -118,7 +118,7 @@ DuckDB database can be rebuilt from that log to answer questions such as:
 This saves hand-written aggregation code while preserving recovery: deleting
 the derived database does not delete the evidence.
 
-### 4. scikit-learn is the VIZZ calibration shortcut
+### 4. scikit-learn is the PUPILA Visual calibration shortcut
 
 For the current sample sizes, the useful baseline is Ridge/affine regression,
 grouped validation and explicit metrics. scikit-learn provides those tested
@@ -135,7 +135,7 @@ session-held-out test
 + no silent CPU fallback
 ```
 
-### 5. MediaPipe plus ONNX Runtime is a two-stage VIZZ path
+### 5. MediaPipe plus ONNX Runtime is a two-stage PUPILA Visual path
 
 MediaPipe can provide face/eye landmarks and ONNX Runtime can execute a small
 mapper using an explicit GPU execution provider. Their roles must not be
@@ -160,7 +160,7 @@ declared safe mode.
 | LUCIDA/ADOBE | Existing Electron companion; optional Forge packaging | Local catalog, preview, drag/drop, bridge permissions and no silent edits |
 | LUCIDA/MULTI | WebSocket client; CloudEvents-shaped envelope | Peer identity, capability, redaction, revision and replay semantics |
 | XIO | `websockets` first; NATS only at scale; DuckDB read side | Event source registry, timestamps, deduplication, persistence policy, auth and replay |
-| VIZZ | MediaPipe/OpenCV/ONNX Runtime conditionally; scikit-learn offline | Calibration contract, camera/monitor geometry, GPU gate, uncertainty and UNKNOWN policy |
+| PUPILA Visual | MediaPipe/OpenCV/ONNX Runtime conditionally; scikit-learn offline | Calibration contract, camera/monitor geometry, GPU gate, uncertainty and UNKNOWN policy |
 | PUPILA | pywinauto already; NetworkX/spaCy conditionally | Relation mapping, analogy evidence, user control, provenance and learning outcomes |
 | IRIS | Yjs only for actual concurrent document editing | Portfolio model, provenance, export, ownership and conflict review |
 

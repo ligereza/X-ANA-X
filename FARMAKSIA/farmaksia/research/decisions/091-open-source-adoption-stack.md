@@ -2,7 +2,7 @@
 
 Date: 2026-09-02
 Status: proposed
-Scope: LUCIDA, XIO, VIZZ, PUPILA and IRIS
+Scope: LUCIDA, XIO, PUPILA Visual, PUPILA and IRIS
 
 ## Decision
 
@@ -14,7 +14,7 @@ order is:
 2. WebSocket transport (`websockets` for Python and native `WebSocket`/`ws`
    for the Electron side) for a real XIO LAN adapter.
 3. DuckDB as a rebuildable read-side view over XIO JSONL evidence.
-4. scikit-learn for offline VIZZ calibration and grouped evaluation.
+4. scikit-learn for offline PUPILA Visual calibration and grouped evaluation.
 5. MediaPipe, OpenCV and ONNX Runtime only after an explicit GPU fixture
    reports the actual execution provider and thermal/latency budget.
 

@@ -1,6 +1,6 @@
 # Research 025 — interfaces críticas, drones e inteligencia
 
-**Fecha de corte:** 2026-08-31  
+**Fecha de corte:** 2026-08-31
 **Pregunta:** ¿Qué pueden enseñarnos las interfaces públicas de sistemas UAS,
 análisis de inteligencia y equipos humano-máquina para construir una capa
 adaptativa de representación en FARMAXIA, sin convertirla en un sistema de
@@ -37,12 +37,12 @@ resultado independiente + auditoría
 
 Esto conecta los tres frentes sin forzarlos a ser una sola app:
 
-- **VIZZ** decide qué relación merece atención, con qué tamaño, contraste,
+- **PUPILA Visual** decide qué relación merece atención, con qué tamaño, contraste,
   posición, ritmo y modalidad. No inventa el estado ni ejecuta acciones.
 - **X-ANA-X** transforma una tarea o procedimiento conocido en una vista
   familiar: alinea etapas, roles, dependencias y diferencias; no superpone
   píxeles al azar.
-- **CODE-INE** convierte ese estado en contratos, parches declarativos,
+- **X-ANA-X** convierte ese estado en contratos, parches declarativos,
   logs y verificadores. La animación puede expresar transición o incertidumbre,
   pero no reemplaza una prueba.
 
@@ -206,11 +206,11 @@ Un escenario local y benigno, sin hardware ni control de drones:
    - **Explicación:** qué observación respalda cada afirmación y qué falta.
    - **Acción:** sólo acciones reversibles como marcar, comparar, pausar,
      solicitar verificación o volver a una versión anterior.
-4. VIZZ adapta saliencia y densidad según tarea, foco y carga observable; si no
+4. PUPILA Visual adapta saliencia y densidad según tarea, foco y carga observable; si no
    hay señal suficiente, conserva una vista estable.
 5. X-ANA-X ofrece una analogía entre dos procedimientos y dibuja explícitamente
    equivalencias, diferencias y límites.
-6. CODE-INE registra el plan declarativo, los parches visuales, la exposición y
+6. X-ANA-X registra el plan declarativo, los parches visuales, la exposición y
    el verificador de resultado.
 
 ### Prueba que demostraría valor
@@ -261,4 +261,3 @@ Evidence Operations Layer, reutilizando los invariantes de ledger, provenance,
 RepresentationPlan y OutcomeVerifier existentes. Si el prototipo no mejora la
 actualización correcta y la trazabilidad bajo una carga controlada, se detiene
 la línea antes de añadir modelos, hardware o integraciones externas.
-

@@ -1,6 +1,6 @@
 # Research 026 — aprender a decidir cuando no existe Ctrl+Z
 
-**Fecha de corte:** 2026-08-31  
+**Fecha de corte:** 2026-08-31
 **Pregunta:** ¿Cómo aprende una persona sin experiencia a supervisar un sistema
 crítico y cómo se reduce la duda cuando una acción física no puede deshacerse?
 
@@ -150,12 +150,12 @@ observable:
 
 ### Aplicación a los tres frentes
 
-- **VIZZ:** hace visible qué cambió y dirige la atención sin ocultar el contexto.
+- **PUPILA Visual:** hace visible qué cambió y dirige la atención sin ocultar el contexto.
   Una señal de saliencia nunca debe sustituir el dato ni impedir la pausa.
 - **X-ANA-X:** enseña un procedimiento desconocido mediante una estructura
   conocida, pero debe mostrar también dónde la analogía se rompe. La analogía
   ayuda a formar un modelo mental; no autoriza la acción.
-- **CODE-INE:** convierte estados, precondiciones, permisos, confirmaciones,
+- **X-ANA-X:** convierte estados, precondiciones, permisos, confirmaciones,
   abortos y resultados en contratos auditables. El código visual no debe
   simular reversibilidad donde no existe.
 
@@ -240,9 +240,9 @@ Medir:
 - Si la persona confía más después de ver sólo demostraciones perfectas, el
   entrenamiento está calibrando sobreconfianza.
 - Si la adaptación visual cambia el significado de un evento o no permite
-  recuperar la vista estable, VIZZ debe desactivarse.
+  recuperar la vista estable, PUPILA Visual debe desactivarse.
 - Si una explicación generada no puede reconstruirse desde evidencia registrada,
-  X-ANA-X/CODE-INE deben marcarla como no verificable.
+  X-ANA-X deben marcarla como no verificable.
 
 ## Decisión
 
@@ -258,4 +258,3 @@ interfaz por sí sola convierta a alguien sin experiencia en operador apto para
 un sistema real es baja: la competencia exige práctica supervisada, doctrina,
 certificación, equipo y responsabilidades institucionales que el software no
 puede sustituir.
-

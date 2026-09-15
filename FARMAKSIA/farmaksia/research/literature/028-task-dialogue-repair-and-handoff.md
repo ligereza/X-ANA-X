@@ -1,6 +1,6 @@
 # Research 028 — diálogo orientado a tareas, reparación y handoff
 
-**Fecha de corte:** 2026-08-31  
+**Fecha de corte:** 2026-08-31
 **Pregunta:** ¿Cómo puede una interfaz dialogar con una persona que no sabe
 qué hacer, reparar una interpretación equivocada y transferir el caso a un
 humano sin obligarla a empezar de nuevo?
@@ -213,16 +213,16 @@ equivalencia → diferencia → límite de la analogía → siguiente elección
 Nunca debe ocultar la diferencia ni avanzar automáticamente sólo porque la
 persona aceptó la explicación.
 
-### VIZZ: diálogo espacial y atencional
+### PUPILA Visual: diálogo espacial y atencional
 
-VIZZ puede llevar la explicación al punto que genera el atasco: ampliar el
+PUPILA Visual puede llevar la explicación al punto que genera el atasco: ampliar el
 control, iluminar la etapa, mostrar una relación o reducir el ruido visual. No
 necesita afirmar que conoce la intención ocular; la mirada es sólo una señal
 auxiliar y el usuario siempre puede pedir ayuda por teclado, mouse o botón.
 
-### CODE-INE: contrato conversacional
+### X-ANA-X: contrato conversacional
 
-CODE-INE debe registrar cada turno como evento tipado:
+X-ANA-X debe registrar cada turno como evento tipado:
 
 ```text
 dialogue_started
@@ -285,4 +285,3 @@ kiosco: propuesta contextual, aclaración de una sola ambigüedad, corrección,
 handoff con contexto y cierre verificado. Después se puede llevar el mismo
 contrato a una interfaz compleja o a una simulación de supervisión, sin conectar
 armas ni sistemas reales.
-

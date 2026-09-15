@@ -11,34 +11,51 @@ from contracts import deterministic_id, normalize_context, sha256
 class PupilaAdapter:
     """Connects states without sharing private signal content or taking action."""
 
-    def __init__(self) -> None:
+    def __init__(self, state_ttl_ms: int = 15000) -> None:
+        if isinstance(state_ttl_ms, bool) or not isinstance(state_ttl_ms, int) or state_ttl_ms < 1000:
+            raise ValueError("state_ttl_ms must be an integer >= 1000")
+        self.state_ttl_ms = state_ttl_ms
         self._states: dict[tuple[str, str, str], dict[str, dict[str, Any]]] = defaultdict(dict)
 
     @staticmethod
     def _state_key(context: dict[str, Any]) -> tuple[str, str, str]:
         return (context["sessionId"], context["roomId"], context["surfaceId"])
 
-    def ingest(self, raw_context: dict[str, Any] | None, vizz_state: dict[str, Any]) -> dict[str, Any]:
+    def ingest(self, raw_context: dict[str, Any] | None, visual_state: dict[str, Any]) -> dict[str, Any]:
         context = normalize_context(raw_context)
-        if vizz_state.get("sessionId") != context["sessionId"] or vizz_state.get("roomId") != context["roomId"]:
-            raise ValueError("VIZZ state and PUPILA context belong to different rooms")
-        participant = str(vizz_state.get("participantRef") or "participant-local")
-        if vizz_state.get("consent") is not True:
-            return self.snapshot(context)
+        if visual_state.get("sessionId") != context["sessionId"] or visual_state.get("roomId") != context["roomId"]:
+            raise ValueError("VISUAL state and PUPILA context belong to different rooms")
+        participant = str(visual_state.get("participantRef") or "participant-local")
+        observed_at = visual_state.get("latestAtMs", 0)
+        if isinstance(observed_at, bool) or not isinstance(observed_at, int) or observed_at < 0:
+            raise ValueError("VISUAL latestAtMs must be a non-negative integer")
+        if visual_state.get("consent") is not True:
+            return self.snapshot(context, now_ms=observed_at)
         self._states[self._state_key(context)][participant] = {
             "participantRef": participant,
-            "policy": str(vizz_state.get("policy") or "quiet"),
-            "activityScore": float(vizz_state.get("activityScore") or 0.0),
-            "focusState": bool(vizz_state.get("focusState")),
-            "sampleCount": int(vizz_state.get("sampleCount") or 0),
-            "signalCoverage": list(vizz_state.get("signalCoverage", [])),
-            "stateHash": str(vizz_state.get("stateHash") or ""),
+            "policy": str(visual_state.get("policy") or "quiet"),
+            "activityScore": float(visual_state.get("activityScore") or 0.0),
+            "focusState": bool(visual_state.get("focusState")),
+            "sampleCount": int(visual_state.get("sampleCount") or 0),
+            "signalCoverage": list(visual_state.get("signalCoverage", [])),
+            "stateHash": str(visual_state.get("stateHash") or ""),
+            "observedAtMs": observed_at,
         }
-        return self.snapshot(context)
+        return self.snapshot(context, now_ms=observed_at)
 
-    def snapshot(self, raw_context: dict[str, Any] | None) -> dict[str, Any]:
+    def snapshot(self, raw_context: dict[str, Any] | None, *, now_ms: int | None = None) -> dict[str, Any]:
         context = normalize_context(raw_context)
-        states = list(self._states.get(self._state_key(context), {}).values())
+        state_bucket = self._states.get(self._state_key(context), {})
+        if now_ms is None:
+            now_ms = max((int(item.get("observedAtMs", 0)) for item in state_bucket.values()), default=0)
+        if isinstance(now_ms, bool) or not isinstance(now_ms, int) or now_ms < 0:
+            raise ValueError("now_ms must be a non-negative integer")
+        cutoff = max(0, now_ms - self.state_ttl_ms)
+        expired = [participant for participant, item in state_bucket.items()
+                   if int(item.get("observedAtMs", 0)) < cutoff]
+        for participant in expired:
+            state_bucket.pop(participant, None)
+        states = list(state_bucket.values())
         active = [item for item in states if item["activityScore"] > 0.18]
         blocked = [item for item in states if item["policy"] == "guide"]
         proposals: list[dict[str, Any]] = []
@@ -73,6 +90,8 @@ class PupilaAdapter:
             "sessionId": context["sessionId"],
             "roomId": context["roomId"],
             "surfaceId": context["surfaceId"],
+            "stateTtlMs": self.state_ttl_ms,
+            "expiredParticipantCount": len(expired),
             "participantCount": len(states),
             "participants": [
                 {

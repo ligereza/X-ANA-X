@@ -1,6 +1,6 @@
 # Research 029 — ONU, armas autónomas y control humano significativo
 
-**Fecha de corte:** 2026-08-31  
+**Fecha de corte:** 2026-08-31
 **Pregunta:** ¿Qué ha pedido la ONU respecto de las armas autónomas y qué
 implicación tiene para una capa de interfaz, diálogo y verificación como
 FARMAXIA?
@@ -93,7 +93,7 @@ de detener o escalar.
 Esto no convierte a FARMAXIA en un sistema de armas. Define una frontera
 arquitectónica que hace más fuerte su núcleo de interfaz adaptativa:
 
-### CODE-INE — trazabilidad y compromiso
+### X-ANA-X — trazabilidad y compromiso
 
 Debe funcionar como un registro reproducible de:
 
@@ -120,7 +120,7 @@ El diálogo puede ofrecer “explicar”, “mostrar evidencia”, “mantener e
 “escalar”. No debe penalizar la duda ni premiar la velocidad por encima del
 resultado verificado.
 
-### VIZZ — atención sin autoridad oculta
+### PUPILA Visual — atención sin autoridad oculta
 
 La mirada, el mouse, el teclado o el giro de cabeza pueden servir para dirigir
 la atención hacia información relevante. No deben convertirse silenciosamente
@@ -164,7 +164,7 @@ software excede la comprensión humana.
 ## Decisión
 
 Adoptar para FARMAXIA un **contrato de control humano significativo** como
-requisito transversal de las capas CODE-INE, X-ANA-X y VIZZ. La primera
+requisito transversal de las capas X-ANA-X, X-ANA-X y PUPILA Visual. La primera
 implementación debe vivir en simulación y en interfaces civiles o industriales
 no letales. Cualquier uso posterior en un contexto militar se limita a
 investigación pública de interfaz, entrenamiento, auditoría y simulación; no
@@ -197,4 +197,3 @@ complejos y adaptativos.
 **Implicación:** esa zona no resuelta es precisamente un terreno fértil para
 FARMAXIA como infraestructura de evidencia, comprensión, incertidumbre y
 auditoría; no como automatizador de la fuerza.
-

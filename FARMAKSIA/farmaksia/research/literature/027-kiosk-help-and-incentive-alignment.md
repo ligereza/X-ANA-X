@@ -1,6 +1,6 @@
 # Research 027 — detectar atasco en kioscos y alinear incentivos
 
-**Fecha de corte:** 2026-08-31  
+**Fecha de corte:** 2026-08-31
 **Pregunta:** ¿Cómo ayuda un sistema a una persona que empezó rápido y luego
 se quedó detenida, sin interrumpirla con un “¿sigues ahí?”; y cómo se evita que
 un sistema de recompensas premie la acción rápida equivocada?
@@ -45,7 +45,7 @@ proponen detectar dificultades sostenidas, no intervenir ante cada instante de
 incertidumbre.
 [Li et al., Procedia CIRP, 2026](https://doi.org/10.1016/j.procir.2026.05.195)
 
-Esto respalda una regla importante para VIZZ: **no hace falta encender la
+Esto respalda una regla importante para PUPILA Visual: **no hace falta encender la
 cámara para que la interfaz ayude**. La interacción nativa ya ofrece señales
 útiles y menos invasivas.
 
@@ -197,7 +197,7 @@ cuándo no comprometerse todavía.
 
 ## Cómo se traduce a FARMAXIA
 
-### VIZZ
+### PUPILA Visual
 
 Detecta atasco desde el flujo de interacción y modifica saliencia local,
 progreso, contraste o densidad. La cámara puede quedar apagada. La mirada, si
@@ -209,7 +209,7 @@ Cuando una persona se bloquea, ofrece una analogía de la etapa actual con un
 procedimiento conocido, mostrando equivalencia y diferencia. No reemplaza la
 decisión ni ejecuta la siguiente acción automáticamente.
 
-### CODE-INE
+### X-ANA-X
 
 Registra `stage_started`, `progress`, `error`, `backtrack`, `help_exposed`,
 `help_accepted`, `handoff`, `commit`, `pause`, `escalate` y `outcome_verified`.
@@ -260,4 +260,3 @@ política de ayuda con datos sintéticos. La cámara y el eye tracking quedan co
 señales opcionales posteriores. En sistemas críticos, “dudar bien” debe ser una
 salida válida y medible; “equivocarse rápido” nunca debe ser el comportamiento
 óptimo por diseño.
-
