@@ -1,34 +1,33 @@
 # PUPILA
 
-PUPILA is a local-first engine for translating a task from an interface a
-person already knows to an interface they do not know yet.
+PUPILA is a local-first assistance engine with two related capabilities:
 
-The engine does not copy a visual interface, execute clicks, or assume that
-two applications have the same internal implementation. It compares declared
-capabilities, roles, actions, labels, modalities, and preconditions, then
-returns a reviewable candidate set with evidence and uncertainty.
+- `src/pupila/association.py` proposes mappings from a task in an interface a
+  person knows to one they are learning. Results include evidence and
+  ambiguity; PUPILA does not execute actions.
+- `src/pupila/runtime/` turns explicitly supplied interaction signals into
+  consent-aware, expiring proposals. The local prototype uses synthetic
+  events; it does not infer a person's mental state or collect real input by
+  itself.
+- `visual/` contains a CPU geometry and measurement kernel. Metric depth stays
+  unauthorized until physical calibration evidence is supplied and verified.
 
-## Boundary
+The runnable prototype is at `apps/local_assistance/`. It stores state in a
+local SQLite file, binds its HTTP server to loopback, and presents proposals
+for explicit review. Its optional LUCIDA consumer requires an explicit path;
+it does not launch or control an Adobe, Resolume, or lighting application.
 
-```text
-interface snapshot A + task intent
-        -> PUPILA association
-        -> candidate mappings + evidence + ambiguity
-        -> human or host application decides whether to apply
+## Validation
+
+From the repository root in PowerShell:
+
+```powershell
+$env:PYTHONPATH = "src"
+python -B -m unittest discover -s tests -v
+python -B -m unittest discover -s apps/local_assistance/tests -v
+$env:PYTHONPATH = "visual/src"
+python -B -m unittest discover -s visual/tests -v
 ```
 
-The first slice is deliberately provider-independent. An agent may supply a
-snapshot or explain a mapping, but PUPILA remains the contract and verifier;
-it is not a chatbot and it never commits an external action.
-
-## Run
-
-```text
-python -m unittest discover -s tests -v
-```
-
-## Product boundary
-
-The repository contains generic algorithms and contracts only. It does not
-contain MAK works, private archives, credentials, user recordings, or an
-application-specific corpus.
+The geometry tests require NumPy from `visual/requirements.txt`. Visual
+characterization fixtures are synthetic and are not physical calibration.

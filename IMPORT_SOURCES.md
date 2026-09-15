@@ -15,3 +15,13 @@ nativas y memoria de casos verificados.
 Las fuentes originales y sus estados previos se conservaron fuera del
 checkout en el archivo local de MAK. El árbol activo usa nombres funcionales
 para evitar que un nombre histórico determine la arquitectura actual.
+
+La proyección del repositorio independiente `ligereza/PUPILA` queda en:
+
+- `src/pupila/` y `apps/local_assistance/` → `PUPILA/assistance/`;
+- `visual/` → `PUPILA/visual/`.
+
+El código corresponde a `ligereza/PUPILA` `main` en `4f5ff01`. No se portan
+bases SQLite, cachés ni la captura de capacidades específica de un equipo.
+Las notas `NEXT.md` que ya existen en la rama son heredadas, no forman parte
+de la proyección PUPILA y no son contratos activos.

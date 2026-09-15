@@ -50,8 +50,10 @@ pero nunca debe usarse para inventar una nueva superficie activa.
 
 ## Validación mínima
 
-- PUPILA/assistance: PYTHONPATH=src python -m unittest discover -s tests -v
-- PUPILA/visual: PYTHONPATH=src python -m unittest discover -s tests -v
+- PUPILA association: from `PUPILA/assistance/`, `PYTHONPATH=src python -m unittest discover -s tests -v`
+- PUPILA local app: from `PUPILA/assistance/`, `PYTHONPATH=src python -m unittest discover -s apps/local_assistance/tests -v`
+- PUPILA visual: from `PUPILA/visual/`, `PYTHONPATH=src python -m unittest discover -s tests -v`
+- Optional PUPILA→LUCIDA replay: from `PUPILA/assistance/`, `PYTHONPATH=src python -m apps.local_assistance.verify_cycle --lucida-root <LUCIDA/resolume/adapter>`
 - LUCIDA/resolume/adapter: PYTHONPATH=tools:. python -m pytest -q -o addopts=
 - LUCIDA compartido: PYTHONPATH=LUCIDA python -m pytest -q -o addopts= LUCIDA/tests
 - core: requiere .NET disponible; si no existe, declarar la compilación como

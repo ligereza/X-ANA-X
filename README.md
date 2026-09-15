@@ -14,8 +14,10 @@ basado en casos verificados.
 Las tres ramas de trabajo son:
 
 - PUPILA: asistencia directa dentro de una interfaz y transferencia
-  analógica desde una interfaz conocida hacia otra por aprender.
-  PUPILA/visual contiene medición geométrica y funciones perceptuales.
+  analógica desde una interfaz conocida hacia otra por aprender. Su runtime
+  local conserva consentimiento, vigencia y propuestas revisables; el
+  prototipo usa eventos sintéticos. PUPILA/visual contiene medición geométrica
+  y funciones perceptuales con evidencia de calibración explícita.
 - FARMAKSIA: estudio investigativo de neurociencia, teoría del color,
   pantallas, percepción y evaluación.
 - LUCIDA: integración transparente con aplicaciones. Sus superficies son
