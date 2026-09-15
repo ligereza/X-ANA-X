@@ -22,7 +22,7 @@
     "visual": {
       "direction": "input",
       "mode": "proposal-signal-only",
-      "signalFamilies": ["attention", "gaze", "display"]
+      "signalFamilies": ["focus", "geometry", "display"]
     },
     "pupila": {
       "direction": "input",

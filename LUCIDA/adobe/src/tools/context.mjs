@@ -98,6 +98,30 @@ function normalizePalette(value) {
     .slice(0, 24)
 }
 
+function normalizeVisualGrid(value) {
+  if (!value || typeof value !== "object") return null
+  const columns = Number(value.columns)
+  const rows = Number(value.rows)
+  if (!Number.isInteger(columns) || !Number.isInteger(rows) || columns < 1 || rows < 1 || columns > 24 || rows > 24) return null
+  const cells = columns * rows
+  if (!Array.isArray(value.detail) || value.detail.length !== cells) return null
+  const detail = value.detail.map((item) => numberOrNull(item)).map((item) => item === null ? 1 : Math.max(0, Math.min(1, item)))
+  const alphaCoverage = Array.isArray(value.alphaCoverage) && value.alphaCoverage.length === cells
+    ? value.alphaCoverage.map((item) => numberOrNull(item)).map((item) => item === null ? 1 : Math.max(0, Math.min(1, item)))
+    : Array(cells).fill(1)
+  return {
+    schemaVersion: 1,
+    columns,
+    rows,
+    detail,
+    alphaCoverage,
+    sampleWidth: numberOrNull(value.sampleWidth),
+    sampleHeight: numberOrNull(value.sampleHeight),
+    historyStateId: numberOrNull(value.historyStateId),
+    method: value.method === "edge-alpha-grid-v1" ? value.method : "unknown",
+  }
+}
+
 function normalizeContext(input = {}) {
   if (!input || typeof input !== "object" || Array.isArray(input)) throw new Error("Context must be an object")
   const host = String(input.host || "").toLowerCase()
@@ -152,6 +176,7 @@ function normalizeContext(input = {}) {
       text: layer?.text ? String(layer.text).slice(0, 1000) : null,
     })),
     palette: normalizePalette(input.palette),
+    visualGrid: normalizeVisualGrid(input.visualGrid),
     occupiedRegions: boundedArray(input.occupiedRegions).map((region) => bounds(region)).filter(Boolean),
     safeRegions: boundedArray(input.safeRegions).map((region) => bounds(region)).filter(Boolean),
     time: input.time && typeof input.time === "object" ? {
@@ -214,16 +239,17 @@ function preferredAssetTerms(context) {
   return [`slide ${number}`, `slide ${padded}`, `lamina ${number}`, `lamina ${padded}`, `slide-${number}`, `slide-${padded}`]
 }
 
-export function recommendationCacheKey(contextHash, limit, surfaceHash) {
-  return `${contextHash}:${limit}:${surfaceHash || "surface-empty"}`
+export function recommendationCacheKey(contextHash, limit, surfaceHash, allowRemote = false) {
+  return `${contextHash}:${limit}:${surfaceHash || "surface-empty"}:${allowRemote ? "remote" : "local"}`
 }
 
-export async function recommendContext({ context: rawContext = null, sessionId = null, host = null, limit = 8 } = {}) {
+export async function recommendContext({ context: rawContext = null, sessionId = null, host = null, limit = 8, allowRemote = false } = {}) {
   const context = rawContext ? normalizeContext(rawContext) : findContext({ sessionId, host })
   if (!context) return { context: null, contextHash: null, results: [], errors: ["No current Adobe context"] }
   const safeLimit = Math.min(12, Math.max(1, Number(limit) || 8))
+  const remoteEnabled = allowRemote === true
   const surface = currentSurface({ sessionId: context.sessionId, context })
-  const cacheKey = recommendationCacheKey(context.contextHash, safeLimit, surface.surfaceHash)
+  const cacheKey = recommendationCacheKey(context.contextHash, safeLimit, surface.surfaceHash, remoteEnabled)
   pruneRecommendationCache()
   const cached = recommendationCache.get(cacheKey)
   if (cached) {
@@ -240,15 +266,17 @@ export async function recommendContext({ context: rawContext = null, sessionId =
   ].filter(Boolean)
   const localQuery = queryForContext(context)
   const local = await searchLocalAssets({ query: localQuery || query, terms, preferredTerms: preferredAssetTerms(context), excludePatterns: ["generated/", "_rejected/"], limit: safeLimit, semantic: true }).catch((error) => ({ results: [], errors: [`Local catalog: ${error.message}`] }))
-  const remote = await searchAssets({
-    query,
-    terms,
-    providers: "visual",
-    limit: safeLimit,
-    ancla: context.selection?.text || context.selection?.name || null,
-    role: "illustration",
-    useGdkb: false,
-  })
+  const remote = remoteEnabled && (local.results || []).length < safeLimit
+    ? await searchAssets({
+        query,
+        terms,
+        providers: "visual",
+        limit: safeLimit,
+        ancla: context.selection?.text || context.selection?.name || null,
+        role: "illustration",
+        useGdkb: false,
+      })
+    : { visual: { results: [] }, errors: [] }
   const bestArea = context.analysis?.layout?.placementCandidates?.[0]
   const localResults = (local.results || []).map((item, index) => ({
     rank: index + 1,
@@ -264,6 +292,10 @@ export async function recommendContext({ context: rawContext = null, sessionId =
     width: item.width,
     height: item.height,
     aspectRatio: item.aspectRatio,
+    matchedTokenCount: item.matchedTokenCount,
+    relatedTokenCount: item.relatedTokenCount,
+    queryTokenCount: item.queryTokenCount,
+    matchCoverage: item.matchCoverage,
     reasons: [
       item.matchReasons?.length ? `coincide con: ${item.matchReasons.slice(0, 4).join(", ")}` : "recurso de la biblioteca local",
       ...(bestArea ? [`candidato para ${bestArea.position}`] : []),
@@ -295,8 +327,10 @@ export async function recommendContext({ context: rawContext = null, sessionId =
       status: surface.status,
       sources: Object.fromEntries(Object.entries(surface.sources).map(([source, value]) => [source, { state: value.state, eventType: value.eventType, sequence: value.sequence }])),
       proposalCount: surface.proposals.length,
+      remoteEnabled,
     },
     errors: [...(local.errors || []), ...(remote.errors || [])],
+    remoteEnabled,
     generatedAt: new Date().toISOString(),
   }
   setRecentBounded(recommendationCache, cacheKey, { createdAt: Date.now(), value }, MAX_RECOMMENDATION_ENTRIES)

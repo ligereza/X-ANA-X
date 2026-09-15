@@ -2,7 +2,7 @@ import test from "node:test"
 import assert from "node:assert/strict"
 import path from "node:path"
 import { TOOLKIT_ROOT } from "../src/utils.mjs"
-import { claimInsert, contextDiagnostics, currentContext, publishContext, queueInsert, recommendationCacheKey, recordInsertResult } from "../src/tools/context.mjs"
+import { claimInsert, contextDiagnostics, currentContext, publishContext, queueInsert, recommendContext, recommendationCacheKey, recordInsertResult } from "../src/tools/context.mjs"
 import { currentSurface, publishSignal } from "../src/tools/signal-bridge.mjs"
 import { normalizeContext as normalizeGenericContext } from "../generic-interface-layer/core/context/normalize.mjs"
 
@@ -32,6 +32,33 @@ test("context store normalizes snapshots and computes a stable hash", () => {
   assert.deepEqual(stored.palette, ["#fff", "#123456"])
   assert.equal(stored.document.path, null)
   assert.equal(currentContext({ sessionId }).contextHash, stored.contextHash)
+})
+
+test("pixel grid context is bounded, clamped and optional", () => {
+  const sessionId = `visual-grid-${Date.now()}`
+  const cells = [0, 0.25, 0.5, 1]
+  const stored = publishContext({
+    ...context(sessionId),
+    visualGrid: {
+      columns: 2,
+      rows: 2,
+      detail: [-1, 0.25, 2, "invalid"],
+      alphaCoverage: cells,
+      sampleWidth: 192,
+      sampleHeight: 144,
+      historyStateId: 7,
+      method: "edge-alpha-grid-v1",
+    },
+  })
+  assert.deepEqual(stored.visualGrid.detail, [0, 0.25, 1, 1])
+  assert.deepEqual(stored.visualGrid.alphaCoverage, cells)
+  assert.equal(stored.visualGrid.historyStateId, 7)
+
+  const invalid = publishContext({
+    ...context(`visual-grid-invalid-${Date.now()}`),
+    visualGrid: { columns: 25, rows: 1, detail: Array(25).fill(0) },
+  })
+  assert.equal(invalid.visualGrid, null)
 })
 
 test("Adobe and generic context boundaries preserve different semantics", () => {
@@ -98,6 +125,29 @@ test("insert result data stays bounded and path-free", () => {
 test("recommendation cache depends on the derived external surface", () => {
   assert.notEqual(recommendationCacheKey("context-1", 8, "surface-a"), recommendationCacheKey("context-1", 8, "surface-b"))
   assert.equal(recommendationCacheKey("context-1", 8, "surface-a"), recommendationCacheKey("context-1", 8, "surface-a"))
+  assert.notEqual(recommendationCacheKey("context-1", 8, "surface-a", false), recommendationCacheKey("context-1", 8, "surface-a", true))
+})
+
+test("recommendations are local-first and do not call remote providers by default", async () => {
+  const sessionId = `local-first-${Date.now()}`
+  publishContext(context(sessionId, "Cuidado y proteccion"))
+  const originalFetch = globalThis.fetch
+  let calls = 0
+  globalThis.fetch = async () => {
+    calls += 1
+    throw new Error("remote provider should not be called")
+  }
+  try {
+    const result = await recommendContext({ sessionId, limit: 8 })
+    assert.equal(calls, 0)
+    assert.equal(result.remoteEnabled, false)
+    assert.ok(result.results.length > 0)
+    assert.ok(result.results.every((item) => item.local === true))
+    assert.ok(result.results.every((item) => Number.isInteger(item.matchedTokenCount) && Number.isInteger(item.relatedTokenCount) && Number.isInteger(item.queryTokenCount)))
+    assert.ok(result.results.every((item) => item.reasons[0].startsWith("coincide con:")))
+  } finally {
+    globalThis.fetch = originalFetch
+  }
 })
 
 test("context state stays bounded across many sessions", () => {

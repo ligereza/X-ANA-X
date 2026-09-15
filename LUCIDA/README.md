@@ -11,6 +11,14 @@ Portable adaptation surfaces for visual, creative and multi-device workflows.
 Each branch keeps its host-specific code isolated. Shared contracts must be
 explicit, replayable and independent of a particular application.
 
+## Integrated source
+
+The Adobe surface in this branch is synchronized from
+`ligereza/LUCIDA`, branch `ADOBE`, source commit
+`fe6550d047210d968d3beaf693d04657517739cd`. Its host-specific files and
+design assets live under `LUCIDA/adobe/`; the standalone branch remains the
+working source for Adobe changes.
+
 Technical identifiers, file names, event keys, fixtures and parseable logs use
 English ASCII. User-facing text may be localized separately.
 
