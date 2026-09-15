@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-soundcheck-session.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-soundcheck-session.schema.json",
   "title": "RESOLUME_ADAPTER NayadeSoundcheckSession",
   "description": "Registro reproducible de pruebas realizadas durante el soundcheck.",
   "type": "object",

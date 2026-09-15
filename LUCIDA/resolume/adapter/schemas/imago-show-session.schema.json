@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/imago-show-session.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:imago-show-session.schema.json",
   "title": "RESOLUME_ADAPTER ImagoShowSession",
   "type": "object",
   "additionalProperties": false,

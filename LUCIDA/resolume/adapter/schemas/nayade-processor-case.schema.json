@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-processor-case.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-processor-case.schema.json",
   "title": "RESOLUME_ADAPTER NayadeProcessorCase",
   "type": "object",
   "additionalProperties": false,

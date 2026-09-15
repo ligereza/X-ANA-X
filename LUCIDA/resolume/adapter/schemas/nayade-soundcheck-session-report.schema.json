@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-soundcheck-session-report.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-soundcheck-session-report.schema.json",
   "title": "RESOLUME_ADAPTER NayadeSoundcheckSessionReport",
   "description": "Resumen seguro del estado de una sesión NAYADE.",
   "type": "object",

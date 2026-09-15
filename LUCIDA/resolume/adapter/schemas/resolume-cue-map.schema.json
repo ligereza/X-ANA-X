@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/resolume-cue-map.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:resolume-cue-map.schema.json",
   "title": "RESOLUME_ADAPTER ResolumeCueMap",
   "description": "Mapa de CUES y transporte extraído de una composición Resolume, en modo lectura.",
   "type": "object",

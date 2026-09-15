@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/module-profile.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:module-profile.schema.json",
   "title": "RESOLUME_ADAPTER LED Module Profile",
   "description": "Physical LED fixture/cabinet information related to a processor snapshot.",
   "type": "object",

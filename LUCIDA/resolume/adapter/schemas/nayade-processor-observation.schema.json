@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-processor-observation.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-processor-observation.schema.json",
   "title": "RESOLUME_ADAPTER NayadeProcessorObservation",
   "type": "object",
   "additionalProperties": false,

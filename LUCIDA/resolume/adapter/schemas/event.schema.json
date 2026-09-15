@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/event.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:event.schema.json",
   "title": "RESOLUME_ADAPTER Event",
   "description": "Evento temporal detectado o inferido por RESOLUME_ADAPTER.",
   "type": "object",

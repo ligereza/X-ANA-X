@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/processor-snapshot.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:processor-snapshot.schema.json",
   "title": "RESOLUME_ADAPTER Processor Snapshot",
   "description": "Read-only discovery record captured before any processor change.",
   "type": "object",

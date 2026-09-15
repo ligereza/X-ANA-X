@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/resolume_adapter-incident-plan.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:resolume_adapter-incident-plan.schema.json",
   "title": "RESOLUME_ADAPTER Incident Plan",
   "description": "Plan de evidencia y recuperación proposal-only para incidentes VJ.",
   "type": "object",

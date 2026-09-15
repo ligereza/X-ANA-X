@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/resolume-advanced-output-map.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:resolume-advanced-output-map.schema.json",
   "title": "RESOLUME_ADAPTER ResolumeAdvancedOutputMap",
   "description": "Modelo de solo lectura de un preset Advanced Output de Resolume.",
   "type": "object",

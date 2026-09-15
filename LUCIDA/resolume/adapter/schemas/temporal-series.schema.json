@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/temporal-series.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:temporal-series.schema.json",
   "title": "RESOLUME_ADAPTER TemporalSeries",
   "description": "Señales temporales muestreadas de una visual.",
   "type": "object",

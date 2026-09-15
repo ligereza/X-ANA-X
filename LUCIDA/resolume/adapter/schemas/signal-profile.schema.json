@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/signal-profile.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:signal-profile.schema.json",
   "title": "RESOLUME_ADAPTER Signal Profile",
   "description": "Contrato compartido para describir una señal VJ y sus observaciones.",
   "type": "object",

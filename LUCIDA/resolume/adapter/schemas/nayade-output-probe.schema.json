@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-output-probe.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-output-probe.schema.json",
   "title": "RESOLUME_ADAPTER NayadeOutputProbe",
   "type": "object",
   "additionalProperties": false,

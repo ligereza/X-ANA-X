@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/show-profile.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:show-profile.schema.json",
   "title": "RESOLUME_ADAPTER ShowProfile",
   "description": "Perfil de destino de un show para comparar media de forma segura.",
   "type": "object",

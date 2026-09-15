@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/processor-catalog.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:processor-catalog.schema.json",
   "title": "RESOLUME_ADAPTER Processor Catalog",
   "description": "Profiles of LED video processors and control systems. A profile describes capabilities, not an automatic write policy.",
   "type": "object",

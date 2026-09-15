@@ -227,7 +227,7 @@
         {
           "kind": "case",
           "title": "RESOLUME_ADAPTER unknown processor policy",
-          "url": "https://mosaik.tools/",
+          "url": "https://github.com/ligereza/LUCIDA/tree/RESOLUME",
           "notes": "Fallback profile: identify only, never write."
         }
       ]

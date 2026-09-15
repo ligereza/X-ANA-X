@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-soundcheck-protocol.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-soundcheck-protocol.schema.json",
   "title": "RESOLUME_ADAPTER NayadeSoundcheckProtocol",
   "description": "Protocolo ordenado y de solo lectura para verificar una cadena VJ durante soundcheck.",
   "type": "object",

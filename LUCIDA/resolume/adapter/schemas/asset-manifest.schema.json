@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/asset-manifest.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:asset-manifest.schema.json",
   "title": "RESOLUME_ADAPTER AssetManifest",
   "description": "Manifiesto de un catálogo o paquete de show.",
   "type": "object",

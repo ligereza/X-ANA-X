@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/nayade-signal-chain-reconciliation.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:nayade-signal-chain-reconciliation.schema.json",
   "title": "RESOLUME_ADAPTER NayadeSignalChainReconciliation",
   "type": "object",
   "additionalProperties": false,

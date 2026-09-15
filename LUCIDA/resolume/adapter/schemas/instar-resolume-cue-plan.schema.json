@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/instar-resolume-cue-plan.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:instar-resolume-cue-plan.schema.json",
   "title": "RESOLUME_ADAPTER InstarResolumeCuePlan",
   "description": "Plan de seis slots de CUE para revisión humana, sin modificar un showfile Resolume.",
   "type": "object",

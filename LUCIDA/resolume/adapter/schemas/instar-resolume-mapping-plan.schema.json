@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://mosaik.tools/schemas/instar-resolume-mapping-plan.schema.json",
+  "$id": "urn:ligereza:lucida:resolume-adapter:instar-resolume-mapping-plan.schema.json",
   "title": "RESOLUME_ADAPTER InstarResolumeMappingPlan",
   "description": "Plan de asignaciones sugeridas entre perfiles INSTAR y slices de Advanced Output.",
   "type": "object",
